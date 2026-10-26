@@ -1,0 +1,808 @@
+<title>Projets BGC-Argo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Mise en page : en-tête, tableau d'état de tous les projets, puis une section par projet
+   (texte et chiffres à gauche, figures à droite) ; une seule colonne sur téléphone. */
+:root {
+  --bg: #f2f5f5;
+  --surface: #ffffff;
+  --ink: #142a2c;
+  --muted: #55696a;
+  --line: #d4dedd;
+  --accent: #0f7f7a;
+  --accent-soft: #dff0ee;
+  --paper: #ffffff;
+  --ok: #2e7d32;
+  --run: #1f6fb2;
+  --idle: #7a8687;
+  --s1: #2a78d6;
+  --s2: #eb6834;
+  --ombre: 0 1px 2px rgba(20, 42, 44, 0.06);
+  --display: "Source Serif 4", "Source Serif Pro", Georgia, serif;
+  --sans: "Source Sans 3", "Source Sans Pro", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "DejaVu Sans Mono", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1717; --surface: #152120; --ink: #e2ecea; --muted: #93a7a5; --line: #283a38;
+    --accent: #4cc3bc; --accent-soft: #1a3634; --paper: #ffffff;
+    --ok: #6cc070; --run: #6aaee8; --idle: #8c9a99;
+    --s1: #3987e5; --s2: #d95926; --ombre: none;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1717; --surface: #152120; --ink: #e2ecea; --muted: #93a7a5; --line: #283a38;
+  --accent: #4cc3bc; --accent-soft: #1a3634; --paper: #ffffff;
+  --ok: #6cc070; --run: #6aaee8; --idle: #8c9a99;
+  --s1: #3987e5; --s2: #d95926; --ombre: none;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 16px); }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--sans); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 48px;
+}
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px;
+}
+.enveloppe { max-width: 1180px; margin: 0 auto; }
+
+/* En-tête */
+.tete { display: grid; gap: 10px; margin-bottom: 28px; }
+.surtitre { margin: 0; font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.04em; color: var(--muted); }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.08; margin: 0; text-wrap: balance; }
+.chapo { margin: 0; max-width: 68ch; font-size: 1.08rem; color: var(--muted); }
+.chapo strong { color: var(--ink); font-weight: 600; }
+
+/* Tableau d'état */
+.etat-titre { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); font-weight: 700; margin: 0 0 8px; }
+.tableau { list-style: none; margin: 0 0 12px; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--ombre); }
+.ligne {
+  display: grid; grid-template-columns: minmax(0, 1fr) 7.5rem minmax(0, 25rem);
+  gap: 4px 16px; align-items: center; padding: 10px 16px; border-top: 1px solid var(--line);
+}
+.ligne:first-child { border-top: 0; }
+.l-titre { min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; }
+.l-titre a { font-weight: 700; color: var(--ink); text-decoration: none; }
+.l-titre a:hover { color: var(--accent); text-decoration: underline; }
+.l-titre .mesure { color: var(--muted); font-size: 0.92rem; }
+.l-meta { display: grid; grid-template-columns: 7.5rem 8.5rem minmax(0, 1fr); gap: 4px 12px; font-size: 0.92rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.l-meta .nb { color: var(--ink); }
+.groupe-ligne { padding: 8px 16px 6px; border-top: 1px solid var(--line); background: var(--bg); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); font-weight: 700; }
+.groupe-ligne:first-child { border-top: 0; border-radius: 8px 8px 0 0; }
+
+.etat { display: inline-flex; align-items: center; gap: 7px; font-size: 0.88rem; font-weight: 600; white-space: nowrap; }
+.etat::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--idle); flex: none; }
+.etat.ok::before { background: var(--ok); }
+.etat.run::before { background: transparent; border: 2px solid var(--run); border-right-color: transparent; width: 11px; height: 11px; }
+.etat.archive::before { background: transparent; border: 2px solid var(--idle); }
+.legende-etat { margin: 0 0 40px; font-size: 0.88rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.legende-etat .etat { font-weight: 400; }
+
+/* Groupes de projets */
+.groupe { margin-top: 8px; }
+.groupe > h2 { font-family: var(--display); font-size: 1.5rem; margin: 0 0 4px; }
+.groupe > p { margin: 0 0 8px; color: var(--muted); max-width: 70ch; }
+
+/* Un projet */
+.projet {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px;
+  padding-block: 36px; border-top: 1px solid var(--line);
+}
+.p-texte { min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.p-tags { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 0.9rem; color: var(--muted); }
+.p-tags .ou { font-family: var(--mono); font-size: 0.8rem; }
+.projet h3 { font-family: var(--display); font-weight: 700; font-size: 1.65rem; line-height: 1.15; margin: 0; text-wrap: balance; }
+.projet h3 .mesure { display: block; font-family: var(--sans); font-weight: 400; font-size: 1rem; color: var(--muted); margin-top: 4px; }
+.p-desc, .p-note { margin: 0; max-width: 62ch; }
+.p-note { font-size: 0.93rem; color: var(--muted); }
+.p-note code, .p-desc code { font-family: var(--mono); font-size: 0.86em; }
+
+.chiffres { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr)); gap: 12px 16px; padding: 12px 0; border-block: 1px solid var(--line); }
+.chiffres div { min-width: 0; }
+.chiffres dt { font-size: 0.82rem; color: var(--muted); line-height: 1.3; }
+.chiffres dd { margin: 2px 0 0; font-family: var(--mono); font-weight: 500; font-size: 1.15rem; }
+.chiffres dd small { font-family: var(--sans); font-size: 0.8rem; color: var(--muted); font-weight: 400; }
+
+.liens { display: flex; flex-wrap: wrap; gap: 8px; }
+.bouton {
+  display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 6px;
+  font-weight: 600; font-size: 0.95rem; text-decoration: none; border: 1px solid var(--line);
+  background: var(--surface); color: var(--ink);
+}
+.bouton:hover { border-color: var(--accent); color: var(--accent); }
+.bouton.principal { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.bouton.principal:hover { color: var(--surface); filter: brightness(1.08); }
+
+/* Figures */
+.p-figures { min-width: 0; display: grid; gap: 12px; align-content: start; }
+.petites { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.petites.seule { grid-template-columns: minmax(0, 1fr); }
+figure { margin: 0; min-width: 0; }
+.vignette { display: block; width: 100%; padding: 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); cursor: zoom-in; }
+.vignette:hover { border-color: var(--accent); }
+.vignette img { display: block; width: 100%; height: auto; }
+.petites .vignette img { aspect-ratio: 4 / 3; object-fit: contain; }
+.petites.seule .vignette img { aspect-ratio: auto; }
+figcaption { margin-top: 6px; font-size: 0.88rem; color: var(--muted); line-height: 1.35; }
+figcaption strong { color: var(--ink); font-weight: 600; }
+
+/* Graphiques dessinés dans la page */
+.graphe { margin: 0; }
+.graphe h4 { margin: 0; font-size: 0.98rem; }
+.graphe .sous { margin: 2px 0 8px; font-size: 0.86rem; color: var(--muted); }
+.cle { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0 0 6px; padding: 0; list-style: none; font-size: 0.86rem; color: var(--muted); }
+.cle li { display: inline-flex; align-items: center; gap: 6px; }
+.cle i { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
+.dessin { width: 100%; min-height: 40px; }
+.dessin svg { display: block; width: 100%; height: auto; overflow: visible; }
+.dessin text { font-family: var(--sans); }
+.dessin .chiffre { font-family: var(--mono); font-size: 11.5px; fill: var(--muted); }
+.dessin .cat { font-size: 13px; fill: var(--ink); }
+.dessin .souscat { font-size: 11.5px; fill: var(--muted); }
+.dessin .axe { font-size: 11px; fill: var(--muted); font-family: var(--mono); }
+.dessin .grille { stroke: var(--line); stroke-width: 1; }
+.dessin .ref { stroke: var(--muted); stroke-width: 1.5; }
+.dessin .zone { fill: transparent; cursor: default; }
+.dessin path, .dessin text, .dessin line { pointer-events: none; }
+.dessin .zone:hover + .barre, .dessin .zone:focus + .barre { filter: brightness(1.15); }
+.dessin .zone:focus { outline: none; }
+.dessin .zone:focus-visible { stroke: var(--accent); stroke-width: 2; }
+details.valeurs { margin-top: 6px; font-size: 0.88rem; }
+details.valeurs summary { cursor: pointer; color: var(--muted); }
+.tableau-valeurs { overflow-x: auto; }
+.tableau-valeurs table { border-collapse: collapse; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.tableau-valeurs th, .tableau-valeurs td { text-align: left; padding: 3px 12px 3px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.tableau-valeurs td.n { text-align: right; font-family: var(--mono); font-size: 0.84rem; }
+.trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.trio div { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; }
+.trio b { display: block; font-family: var(--mono); font-weight: 500; font-size: 1.35rem; }
+.trio span { font-size: 0.82rem; color: var(--muted); line-height: 1.3; display: block; }
+
+#bulle {
+  position: fixed; z-index: 30; pointer-events: none; max-width: 260px;
+  background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 6px;
+  padding: 6px 10px; font-size: 0.85rem; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+#bulle strong { display: block; font-family: var(--mono); font-weight: 500; font-size: 0.95rem; }
+#bulle span { color: var(--muted); }
+
+/* Autres dépôts */
+.depots { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 0 32px; }
+.depots li { padding: 10px 0; border-top: 1px solid var(--line); min-width: 0; }
+.depots a { font-family: var(--mono); font-size: 0.92rem; font-weight: 500; word-break: break-word; }
+.depots p { margin: 2px 0 0; font-size: 0.92rem; color: var(--muted); }
+
+.pied { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 0.88rem; color: var(--muted); max-width: 80ch; }
+.pied p { margin: 0 0 6px; }
+
+/* Visionneuse */
+dialog#visio {
+  width: min(1400px, calc(100vw - 24px)); max-width: none; max-height: calc(100vh - 24px);
+  padding: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink);
+}
+dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
+.v-contenu { display: flex; flex-direction: column; max-height: calc(100vh - 26px); }
+.v-barre { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.v-titre { flex: 1 1 260px; min-width: 0; }
+.v-titre strong { display: block; font-size: 1.05rem; }
+.v-titre span { color: var(--muted); font-size: 0.9rem; }
+.v-barre button, .v-barre a { font: inherit; font-size: 0.92rem; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; text-decoration: none; }
+.v-barre button:hover, .v-barre a:hover { border-color: var(--accent); }
+.v-compteur { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 0.9rem; min-width: 3.5em; text-align: center; }
+.v-cadre { overflow: auto; background: var(--paper); flex: 1 1 auto; min-height: 0; display: flex; justify-content: center; }
+.v-cadre img { display: block; max-width: 100%; max-height: calc(100vh - 190px); width: auto; height: auto; object-fit: contain; cursor: zoom-in; }
+.v-cadre.grand { display: block; }
+.v-cadre.grand img { max-width: none; max-height: none; cursor: zoom-out; }
+.v-note { margin: 0; padding: 10px 14px 12px; font-size: 0.93rem; border-top: 1px solid var(--line); }
+
+@media (max-width: 860px) {
+  .projet { grid-template-columns: minmax(0, 1fr); gap: 20px; padding-block: 28px; }
+  .ligne { grid-template-columns: minmax(0, 1fr) auto; }
+  .l-meta { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 2px 14px; }
+}
+@media (max-width: 460px) {
+  .petites { grid-template-columns: minmax(0, 1fr); }
+  .trio b { font-size: 1.1rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bouton, .vignette { transition: border-color 0.15s, color 0.15s; }
+}
+</style>
+
+<div class="enveloppe">
+
+<header class="tete">
+  <p class="surtitre">VM oao2022 · Mac · GitHub antoine250</p>
+  <h1>Projets BGC-Argo</h1>
+  <p class="chapo">Huit études sur les capteurs bio-optiques des flotteurs BGC-Argo et du profileur CIDRE : chlorophylle, rétrodiffusion à 700 nm, lumière. <strong>1&#8239;046 pages de graphiques</strong> en tout ; chaque projet montre ses figures principales et renvoie vers sa page complète. État au 26 octobre 2026.</p>
+</header>
+
+<section aria-labelledby="titre-etat">
+  <h2 class="etat-titre" id="titre-etat">Où en est chaque projet</h2>
+  <ul class="tableau">
+    <li class="groupe-ligne">Sur la VM oao2022</li>
+    <li class="ligne">
+      <div class="l-titre"><a href="#chla435">CHLA435 / CHLA</a><span class="mesure">Chlorophylle excitée à 435 nm</span></div>
+      <span class="etat ok">Actif</span>
+      <div class="l-meta"><span>VM</span><span class="nb">29 graphiques</span><span>26 oct. 2026</span></div>
+    </li>
+    <li class="ligne">
+      <div class="l-titre"><a href="#sauzede">Facteur Sauzède</a><span class="mesure">Retraitement de la CHLA par DAC</span></div>
+      <span class="etat ok">Actif</span>
+      <div class="l-meta"><span>VM</span><span class="nb">22 graphiques</span><span>21 oct. 2026</span></div>
+    </li>
+    <li class="ligne">
+      <div class="l-titre"><a href="#metrique">Étude métrique V2</a><span class="mesure">Suivi de la base, CHLA et BBP700 par capteur</span></div>
+      <span class="etat ok">Actif</span>
+      <div class="l-meta"><span>VM · GitHub</span><span class="nb">404 pages</span><span>23 oct. 2026</span></div>
+    </li>
+    <li class="ligne">
+      <div class="l-titre"><a href="#oc5">CHLA / OC5 jour – nuit</a><span class="mesure">Flotteur contre satellite</span></div>
+      <span class="etat ok">Actif</span>
+      <div class="l-meta"><span>VM</span><span class="nb">15 graphiques</span><span>23 oct. 2026</span></div>
+    </li>
+    <li class="ligne">
+      <div class="l-titre"><a href="#soca">SOCA CLIM Light Argo</a><span class="mesure">Profils de lumière PAR et Ed</span></div>
+      <span class="etat run">En calcul</span>
+      <div class="l-meta"><span>VM</span><span class="nb">106 graphiques</span><span>23 oct. 2026</span></div>
+    </li>
+    <li class="groupe-ligne">Sur le Mac</li>
+    <li class="ligne">
+      <div class="l-titre"><a href="#cidre">CIDRE</a><span class="mesure">Intercomparaisons au banc profileur</span></div>
+      <span class="etat archive">Archivé</span>
+      <div class="l-meta"><span>Mac</span><span class="nb">71 graphiques</span><span>23 oct. 2026</span></div>
+    </li>
+    <li class="ligne">
+      <div class="l-titre"><a href="#refine">REFINE CIDRE vs HPLC</a><span class="mesure">Sept campagnes en mer</span></div>
+      <span class="etat archive">Archivé</span>
+      <div class="l-meta"><span>Mac</span><span class="nb">384 pages</span><span>23 oct. 2026</span></div>
+    </li>
+    <li class="groupe-ligne">Sur GitHub</li>
+    <li class="ligne">
+      <div class="l-titre"><a href="#etude-chla">ETUDE_CHLA</a><span class="mesure">MCOMS contre ECO, CHL intégrée 0-200 m</span></div>
+      <span class="etat">Dépôt</span>
+      <div class="l-meta"><span>GitHub</span><span class="nb">15 pages</span><span>10 nov. 2025</span></div>
+    </li>
+  </ul>
+  <p class="legende-etat">
+    <span class="etat ok">Actif : session Claude ouverte sur la VM</span>
+    <span class="etat run">En calcul : une chaîne tourne</span>
+    <span class="etat archive">Archivé : session terminée</span>
+    <span>Date : dernière mise à jour des graphiques</span>
+  </p>
+</section>
+
+<section class="groupe" aria-labelledby="g-vm">
+  <h2 id="g-vm">Sur la VM oao2022</h2>
+  <p>Cinq sessions Claude tournent sur le serveur, chacune avec sa page de graphiques.</p>
+
+  <article class="projet" id="chla435" data-galerie="https://claude.ai/artifact/VeyUFmpXRrTi1sqrMFvcbu">
+    <div class="p-texte">
+      <p class="p-tags"><span class="etat ok">Actif</span><span class="ou">VM oao2022</span></p>
+      <h3>CHLA435 / CHLA<span class="mesure">Chlorophylle excitée à 435 nm, comparée à la CHLA standard</span></h3>
+      <p class="p-desc">Compare CHLA435 à la chlorophylle des flotteurs BGC-Argo, brute (CHLA) puis ajustée (CHLA_ADJUSTED). Pour chaque cycle, le rapport est la médiane entre 5 dbar et le bas de la couche de mélange, sans les mesures QC 4. Il est gardé entre 0,1 et 10, puis les valeurs trop éloignées sont retirées. Cartes et statistiques par latitude, longitude et bassin.</p>
+      <dl class="chiffres">
+        <div><dt>Flotteurs</dt><dd>114</dd></div>
+        <div><dt>Cycles</dt><dd>6&#8239;137</dd></div>
+        <div><dt>Cycles sur la carte (CHLA)</dt><dd>5&#8239;394</dd></div>
+        <div><dt>Cases de 10°</dt><dd>173</dd></div>
+      </dl>
+      <p class="p-note">Programme 02, données du 10 octobre 2026. Le programme 01 n'a pas encore été lancé.</p>
+      <div class="liens"><a class="bouton principal" href="https://claude.ai/artifact/VeyUFmpXRrTi1sqrMFvcbu" target="_blank" rel="noopener">Ouvrir les 29 graphiques</a></div>
+    </div>
+    <div class="p-figures">
+      <figure>
+        <button class="vignette" type="button" data-note="173 cases, 5&#8239;394 cycles. Gris : rapport proche de 1, les deux mesures sont d'accord ; orange et rouge : CHLA435 plus forte."><img src="img/chla435-1.jpg" width="1600" height="1105" alt="Carte du rapport CHLA435 / CHLA médian par case de 10 degrés" loading="lazy"></button>
+        <figcaption><strong>Rapport médian par case de 10° × 10°</strong></figcaption>
+      </figure>
+      <div class="petites">
+        <figure>
+          <button class="vignette" type="button" data-note="Chaque point est un cycle, coloré selon le rapport CHLA435 / CHLA. 5&#8239;394 cycles sur la carte."><img src="img/chla435-2.jpg" width="1600" height="1105" alt="Carte mondiale du rapport CHLA435 / CHLA, un point par cycle" loading="lazy"></button>
+          <figcaption>Carte mondiale, un point par cycle</figcaption>
+        </figure>
+        <figure>
+          <button class="vignette" type="button" data-note="Médiane et écart entre quartiles par bande de 10° de latitude. Le chiffre au-dessus de chaque barre est le nombre de cycles."><img src="img/chla435-3.jpg" width="1600" height="1105" alt="Médiane et quartiles du rapport selon la latitude" loading="lazy"></button>
+          <figcaption>Médiane et quartiles par latitude</figcaption>
+        </figure>
+      </div>
+    </div>
+  </article>
+
+  <article class="projet" id="sauzede" data-galerie="https://claude.ai/artifact/LoEdZfjSr12KAuCLTxNyXK">
+    <div class="p-texte">
+      <p class="p-tags"><span class="etat ok">Actif</span><span class="ou">VM oao2022</span></p>
+      <h3>Facteur Sauzède<span class="mesure">Retraitement de la CHLA avec le nouveau facteur de calibration</span></h3>
+      <p class="p-desc">Suit, DAC par DAC, la part des profils CHLA dont le rapport CHLA / CHLA_ADJUSTED n'est plus 2, la part dont le commentaire de calibration cite le nouveau facteur, et la part finale retraitée. Les cartes de trajectoires montrent les flotteurs qui suivent la règle finale.</p>
+      <dl class="chiffres">
+        <div><dt>Profils CHLA</dt><dd>198&#8239;141</dd></div>
+        <div><dt>Sans les profils D</dt><dd>183&#8239;163</dd></div>
+        <div><dt>Retraités, tous DAC</dt><dd>96,7 %</dd></div>
+        <div><dt>Flotteurs « règle finale »</dt><dd>572</dd></div>
+      </dl>
+      <div class="graphe" id="g-sauzede">
+        <h4>Part retraitée par DAC</h4>
+        <p class="sous">« % final » du tableau du 21 octobre 2026, DAC rangés par nombre de profils. JMA n'a encore aucun profil retraité.</p>
+        <div class="dessin"></div>
+      </div>
+      <p class="p-note">Le programme 03 n'a pas de graphique : son fichier d'entrée n'existe plus.</p>
+      <div class="liens"><a class="bouton principal" href="https://claude.ai/artifact/LoEdZfjSr12KAuCLTxNyXK" target="_blank" rel="noopener">Ouvrir les 22 graphiques</a></div>
+    </div>
+    <div class="p-figures">
+      <figure>
+        <button class="vignette" type="button" data-note="Carte des profils CHLA et tableau par DAC : nombre de profils, avec et sans les profils D, puis les pourcentages « ratio ≠ 2 », « comment » et « final ». 21 octobre 2026."><img src="img/sauzede-1.jpg" width="1600" height="1253" alt="Carte des profils CHLA et tableau des pourcentages par DAC" loading="lazy"></button>
+        <figcaption><strong>Profils CHLA et tableau par DAC</strong> · 21 octobre 2026</figcaption>
+      </figure>
+      <div class="petites">
+        <figure>
+          <button class="vignette" type="button" data-note="Vert : le nouveau facteur est présent, ou le rapport est proche de 2 pour 70 % des profils au plus. Gris : ni l'un ni l'autre. 572 flotteurs en vert. 18 juin 2026."><img src="img/sauzede-2.jpg" width="1600" height="1156" alt="Trajectoires des flotteurs selon la règle finale" loading="lazy"></button>
+          <figcaption>Trajectoires : règle finale</figcaption>
+        </figure>
+        <figure>
+          <button class="vignette" type="button" data-note="Tous les DAC : part des profils où la métrique existe, par case de 10° et point par point. Fichier de métriques du 13 octobre 2026, profils CHLA-D exclus. Métrique : rapport moyen FLUO / CHLA ajustés."><img src="img/sauzede-3.jpg" width="1600" height="800" alt="Carte de la part des profils où la métrique existe, tous DAC" loading="lazy"></button>
+          <figcaption>Métrique présente, tous DAC</figcaption>
+        </figure>
+      </div>
+    </div>
+  </article>
+
+  <article class="projet" id="metrique" data-galerie="https://claude.ai/artifact/CQou6hnrZ72suKwQXZ53zz">
+    <div class="p-texte">
+      <p class="p-tags"><span class="etat ok">Actif</span><span class="ou">VM oao2022 · GitHub</span></p>
+      <h3>Étude métrique V2<span class="mesure">Suivi de la base et comparaison des capteurs CHLA et BBP700</span></h3>
+      <p class="p-desc">Deux volets. Le suivi quotidien de la base BGC-Argo : fichiers B modifiés par DAC, évolution des paramètres jour après jour, CHLA intégrée 0-150 m. La comparaison des capteurs : CHLA des ECO_2, ECO_3 et MCOMS face au satellite OC5, avec triple collocation, et BBP700 des FLBB, triplets et MCOMS face à la climatologie SOCA, en surface (0-10 m) et en profondeur (900-950 m).</p>
+      <dl class="chiffres">
+        <div><dt>Graphiques</dt><dd>26</dd></div>
+        <div><dt>Pages</dt><dd>404</dd></div>
+        <div><dt>Capteurs comparés</dt><dd>3 <small>par paramètre</small></dd></div>
+        <div><dt>Données</dt><dd>13 oct. <small>2026</small></dd></div>
+      </dl>
+      <div class="liens">
+        <a class="bouton principal" href="https://claude.ai/artifact/CQou6hnrZ72suKwQXZ53zz" target="_blank" rel="noopener">Ouvrir les 26 graphiques</a>
+        <a class="bouton" href="https://github.com/antoine250/ETUDE_METRIQUE_V2" target="_blank" rel="noopener">Dépôt GitHub</a>
+      </div>
+    </div>
+    <div class="p-figures">
+      <figure>
+        <button class="vignette" type="button" data-note="Facteur d'erreur de chaque capteur (ECO_2, ECO_3, MCOMS), année par année et en cumulé. Plus proche de 1 : meilleure précision ; pointillé : valeur idéale. CSV du 13 octobre 2026."><img src="img/metrique-1.jpg" width="1400" height="728" alt="Triple collocation des trois capteurs de chlorophylle" loading="lazy"></button>
+        <figcaption><strong>Triple collocation ECO_2 / ECO_3 / MCOMS</strong></figcaption>
+      </figure>
+      <div class="petites">
+        <figure>
+          <button class="vignette" type="button" data-note="Nombre de fichiers B modifiés par jour et par DAC, sur les 6 mois jusqu'au 21 octobre 2026."><img src="img/metrique-2.jpg" width="1401" height="778" alt="Nombre de fichiers B modifiés par jour et par DAC" loading="lazy"></button>
+          <figcaption>Fichiers B modifiés par DAC</figcaption>
+        </figure>
+        <figure>
+          <button class="vignette" type="button" data-note="Localisation des matchups BBP700 médiane 900-950 m, dans les zones et périodes communes aux FLBB, triplets et MCOMS."><img src="img/metrique-3.jpg" width="1400" height="850" alt="Carte des matchups BBP700 entre 900 et 950 m" loading="lazy"></button>
+          <figcaption>Matchups BBP700 à 900-950 m</figcaption>
+        </figure>
+      </div>
+    </div>
+  </article>
+
+  <article class="projet" id="oc5" data-galerie="https://claude.ai/artifact/QJgNBPrVLRd3CVoJt1SUkd">
+    <div class="p-texte">
+      <p class="p-tags"><span class="etat ok">Actif</span><span class="ou">VM oao2022</span></p>
+      <h3>CHLA / OC5 jour – nuit<span class="mesure">La CHLA des flotteurs face au satellite, de jour et de nuit</span></h3>
+      <p class="p-desc">Compare la CHLA ajustée des flotteurs (médiane 0-10 m) à la chlorophylle satellite OC5 au même endroit, pour tous les profils puis séparément de nuit et de jour. Un profil est de jour quand le soleil est à 5° ou plus au-dessus de l'horizon.</p>
+      <div class="trio" aria-label="Rapport médian CHLA / OC5">
+        <div><b>0,939</b><span>Rapport médian, tous les profils (106&#8239;082)</span></div>
+        <div><b>1,017</b><span>De nuit (39&#8239;311 profils)</span></div>
+        <div><b>0,906</b><span>De jour (66&#8239;771 profils)</span></div>
+      </div>
+      <p class="p-note">Corrélation en log10 : r = 0,767 sur tous les profils. Le flotteur mesure un peu moins que le satellite de jour, autant de nuit. Fichier de métriques du 23 octobre 2026.</p>
+      <div class="liens"><a class="bouton principal" href="https://claude.ai/artifact/QJgNBPrVLRd3CVoJt1SUkd" target="_blank" rel="noopener">Ouvrir les 15 graphiques</a></div>
+    </div>
+    <div class="p-figures">
+      <figure>
+        <button class="vignette" type="button" data-note="Chaque point est un profil : CHLA ajustée médiane 0-10 m du flotteur contre la CHLA OC5 au même endroit. Panneaux : tous, nuit, jour. Tirets : égalité 1:1, échelles logarithmiques."><img src="img/oc5-1.jpg" width="1600" height="600" alt="Nuages de points OC5 contre CHLA du flotteur, tous, nuit et jour" loading="lazy"></button>
+        <figcaption><strong>OC5 contre CHLA du flotteur</strong> · tous, nuit, jour</figcaption>
+      </figure>
+      <div class="petites">
+        <figure>
+          <button class="vignette" type="button" data-note="Rapport CHLA / OC5 médian par case de 10° × 10°. Orange-rouge : le flotteur mesure plus que le satellite ; bleu-vert : moins. Cases occupées : 402 (tous), 391 (nuit), 400 (jour)."><img src="img/oc5-2.jpg" width="1600" height="600" alt="Cartes du rapport CHLA / OC5 médian par case de 10 degrés" loading="lazy"></button>
+          <figcaption>Rapport médian par case de 10°</figcaption>
+        </figure>
+        <figure>
+          <button class="vignette" type="button" data-note="Dans chaque case : rapport médian CHLA / OC5 de jour divisé par celui de nuit. Bleu (moins de 1) : plus bas de jour ; rouge (plus de 1) : plus haut de jour."><img src="img/oc5-3.jpg" width="1600" height="600" alt="Carte du rapport jour sur nuit" loading="lazy"></button>
+          <figcaption>Rapport jour ÷ nuit</figcaption>
+        </figure>
+      </div>
+    </div>
+  </article>
+
+  <article class="projet" id="soca" data-galerie="https://claude.ai/artifact/SubBQHCvpD9kHn8tr6vQVr">
+    <div class="p-texte">
+      <p class="p-tags"><span class="etat run">En calcul</span><span class="ou">VM oao2022</span></p>
+      <h3>SOCA CLIM Light Argo<span class="mesure">Profils de lumière PAR, Ed380, Ed412 et Ed490</span></h3>
+      <p class="p-desc">Chaîne quotidienne sur la VM (<code>run_pipeline.sh</code>, lancée par cron chaque jour à 12 h). Pour chaque profil BGC-Argo avec chlorophylle, elle produit un profil de lumière climatologique (CLIM) et un profil SOCA, à comparer avec ce que mesure le flotteur. Les PDF par flotteur sont servis par le site web de la VM, dans <code>/var/www/html/bioargo/</code>.</p>
+      <dl class="chiffres">
+        <div><dt>Profils avec chlorophylle</dt><dd>191&#8239;122</dd></div>
+        <div><dt>Avec un profil CLIM</dt><dd>98,7 %</dd></div>
+        <div><dt>Avec un profil SOCA rempli</dt><dd>108&#8239;142</dd></div>
+        <div><dt>Flotteurs</dt><dd>1&#8239;526</dd></div>
+      </dl>
+      <p class="p-note">Pas de SOCA après février 2026 : il n'y a plus de matchups ACRI. La chaîne a été relancée le 26 octobre à 15 h 19 ; la session doit donner le nouveau nombre de profils SOCA. Dernier run complet : 4 h 01.</p>
+      <div class="liens">
+        <a class="bouton principal" href="https://claude.ai/artifact/SubBQHCvpD9kHn8tr6vQVr" target="_blank" rel="noopener">Ouvrir les 106 graphiques</a>
+        <a class="bouton" href="https://claude.ai/artifact/QTPrF1Qn6P3u3YFFb4jbF4" target="_blank" rel="noopener">Tableau de bord</a>
+      </div>
+    </div>
+    <div class="p-figures">
+      <figure>
+        <button class="vignette" type="button" data-note="Profils avec chlorophylle de l'index Argo synthétique, et parmi eux ceux qui ont un fichier CLIM ou un fichier SOCA. Le trait marque le dernier mois où plus de 5 % des profils ont SOCA."><img src="img/soca-1.jpg" width="1320" height="550" alt="Nombre de profils par mois, avec CLIM et avec SOCA" loading="lazy"></button>
+        <figcaption><strong>Profils par mois de mesure</strong> · 23 octobre 2026</figcaption>
+      </figure>
+      <div class="petites">
+        <figure>
+          <button class="vignette" type="button" data-note="Pour chaque DAC : part de ses profils avec chlorophylle qui ont un profil CLIM, et part qui ont un profil SOCA."><img src="img/soca-2.jpg" width="1320" height="660" alt="Part des profils avec CLIM et SOCA par DAC" loading="lazy"></button>
+          <figcaption>Part CLIM et SOCA par DAC</figcaption>
+        </figure>
+        <figure>
+          <button class="vignette" type="button" data-note="Premier cycle du flotteur 1902493. À gauche : mesuré par le flotteur (vert), climatologie (rouge), SOCA (bleu) ; à droite : climatologie et SOCA à midi local."><img src="img/soca-3.jpg" width="864" height="1152" alt="Profils de lumière du flotteur 1902493, cycle 1" loading="lazy"></button>
+          <figcaption>WMO 1902493, cycle 1</figcaption>
+        </figure>
+      </div>
+    </div>
+  </article>
+</section>
+
+<section class="groupe" aria-labelledby="g-mac">
+  <h2 id="g-mac">Sur le Mac</h2>
+  <p>Deux sessions terminées le 23 octobre ; leurs pages de graphiques restent en ligne.</p>
+
+  <article class="projet" id="cidre" data-galerie="https://claude.ai/artifact/Y6MoexHdZpgkavNLPkAkqw">
+    <div class="p-texte">
+      <p class="p-tags"><span class="etat archive">Archivé</span><span class="ou">Mac · SIBO_CIDRE</span></p>
+      <h3>CIDRE<span class="mesure">Intercomparaisons de capteurs au banc profileur, 2021 à 2024</span></h3>
+      <p class="p-desc">Rapport des sorties du profileur CIDRE de février 2021 à juillet 2024 : capteurs ECO (FLBBCD, FLBBFL), radiomètres OCR-504, C-Rover, SUNA et Tridente, avec profils et comparaisons sortie par sortie. Deux études ouvrent le rapport : gain et fond des ECO pour la Chl a et pour β(700).</p>
+      <dl class="chiffres">
+        <div><dt>Figures</dt><dd>71</dd></div>
+        <div><dt>Sorties</dt><dd>38</dd></div>
+        <div><dt>Écart de gain entre ECO, Chl a</dt><dd>≈ 10 %</dd></div>
+        <div><dt>Écart de gain entre ECO, β(700)</dt><dd>≈ 12 %</dd></div>
+      </dl>
+      <p class="p-note">Rapport <code>rapport_CIDRE.pdf</code> régénéré le 23 octobre 2026 par <code>02_RAPPORT_CIDRE.py</code>.</p>
+      <div class="liens"><a class="bouton principal" href="https://claude.ai/artifact/Y6MoexHdZpgkavNLPkAkqw" target="_blank" rel="noopener">Ouvrir les 71 graphiques</a></div>
+    </div>
+    <div class="p-figures">
+      <figure>
+        <button class="vignette" type="button" data-note="Variabilité inter-capteurs de la Chl : ≈ 10 % sur le gain (coefficient de variation des 59 gains relatifs ; estimation robuste : 8 %). Le fond ajoute ≈ 8 % au maximum du signal."><img src="img/cidre-1.jpg" width="836" height="435" alt="Gain relatif et fond de chaque ECO pour la chlorophylle" loading="lazy"></button>
+        <figcaption><strong>Chl a des ECO : gain relatif et fond par capteur</strong></figcaption>
+      </figure>
+      <div class="petites">
+        <figure>
+          <button class="vignette" type="button" data-note="Sortie du 6 octobre 2023 : 10 ECO FLBBFL numérotés de 1 à 10. Pour les canaux 435, 695 et 700 : profils, écart à la référence, et capteur contre référence."><img src="img/cidre-2.jpg" width="1430" height="1386" alt="Comparaison de 10 ECO FLBBFL le 6 octobre 2023" loading="lazy"></button>
+          <figcaption>10 ECO FLBBFL, 6 octobre 2023</figcaption>
+        </figure>
+        <figure>
+          <button class="vignette" type="button" data-note="Variabilité inter-capteurs de β(700) : ≈ 12 % sur le gain (coefficient de variation des 55 gains relatifs ; estimation robuste : 7 %)."><img src="img/cidre-3.jpg" width="836" height="407" alt="Gain relatif et fond de chaque ECO pour la rétrodiffusion à 700 nm" loading="lazy"></button>
+          <figcaption>β(700) des ECO : gain et fond</figcaption>
+        </figure>
+      </div>
+    </div>
+  </article>
+
+  <article class="projet" id="refine" data-galerie="https://claude.ai/artifact/CSyrUedfrWGtAj6z33zSLp">
+    <div class="p-texte">
+      <p class="p-tags"><span class="etat archive">Archivé</span><span class="ou">Mac · MANIP_MER_REFINE</span></p>
+      <h3>REFINE CIDRE vs HPLC<span class="mesure">Capteurs du profileur face aux prélèvements HPLC</span></h3>
+      <p class="p-desc">Profils du profileur CIDRE pendant sept campagnes en mer, de TONGA (2019) à KEBBAB (2023), comparés station par station à la chlorophylle totale mesurée par HPLC (TChla). Une synthèse réunit toutes les campagnes pour chl470, chl435, bbp700, C-Rover et c*.</p>
+      <dl class="chiffres">
+        <div><dt>Campagnes</dt><dd>7</dd></div>
+        <div><dt>Stations</dt><dd>84</dd></div>
+        <div><dt>Prélèvements HPLC</dt><dd>784</dd></div>
+        <div><dt>Pages</dt><dd>384</dd></div>
+      </dl>
+      <div class="graphe" id="g-refine">
+        <h4>Prélèvements HPLC par campagne</h4>
+        <p class="sous">Prélèvements avec une TChla HPLC, campagnes dans l'ordre chronologique.</p>
+        <div class="dessin"></div>
+      </div>
+      <p class="p-note">MEIO a été refait le 4 mars 2025 ; les six autres missions datent du 21 août 2024.</p>
+      <div class="liens">
+        <a class="bouton principal" href="https://claude.ai/artifact/CSyrUedfrWGtAj6z33zSLp" target="_blank" rel="noopener">Ouvrir les 384 pages</a>
+        <a class="bouton" href="https://claude.ai/artifact/Vvo92wTwtcrkL9b5xCUwWh" target="_blank" rel="noopener">Tableau de bord</a>
+      </div>
+    </div>
+    <div class="p-figures">
+      <figure>
+        <button class="vignette" type="button" data-note="TONGA 2019, station TONGA_TWO_002 : profils des capteurs moyennés aux bouteilles (descente corrigée et remontée), comparés à la TChla HPLC en noir."><img src="img/refine-1.jpg" width="882" height="882" alt="Comparaison capteur et HPLC à une station de TONGA" loading="lazy"></button>
+        <figcaption><strong>TONGA, station 2 : capteur et HPLC</strong> · 3 novembre 2019</figcaption>
+      </figure>
+      <div class="petites">
+        <figure>
+          <button class="vignette" type="button" data-note="Descente (DES) et remontée (ASC) sur toute la profondeur : chlorophylle, bbp700, atténuation et densité."><img src="img/refine-2.jpg" width="882" height="882" alt="Profil complet de la station 2 de TONGA" loading="lazy"></button>
+          <figcaption>Profil complet, même station</figcaption>
+        </figure>
+        <figure>
+          <button class="vignette" type="button" data-note="Toutes les campagnes : valeur ± écart-type selon la pression de la bouteille, une couleur par campagne, pour chl470v1 et chl470v2."><img src="img/refine-3.jpg" width="882" height="882" alt="Synthèse chl470 de toutes les campagnes" loading="lazy"></button>
+          <figcaption>Synthèse chl470, toutes campagnes</figcaption>
+        </figure>
+      </div>
+    </div>
+  </article>
+</section>
+
+<section class="groupe" aria-labelledby="g-github">
+  <h2 id="g-github">Sur GitHub</h2>
+  <p>Les dépôts du compte antoine250.</p>
+
+  <article class="projet" id="etude-chla" data-galerie="https://github.com/antoine250/ETUDE_CHLA">
+    <div class="p-texte">
+      <p class="p-tags"><span class="etat">Dépôt</span><span class="ou">github.com/antoine250/ETUDE_CHLA</span></p>
+      <h3>ETUDE_CHLA<span class="mesure">MCOMS contre ECO, chlorophylle intégrée 0-200 m</span></h3>
+      <p class="p-desc">Compare la chlorophylle intégrée 0-200 m (CHL_ADJUSTED) des capteurs MCOMS à celle des capteurs ECO, sur des profils co-localisés à ± 2° et ± 30 jours, bassin par bassin. Scripts R : <code>EXTRACTION_CHLA_ver2.R</code> et <code>PLOT_CHLA_ver3.R</code>.</p>
+      <dl class="chiffres">
+        <div><dt>Profils co-localisés</dt><dd>13&#8239;000</dd></div>
+        <div><dt>Rapport MCOMS / ECO, tous océans</dt><dd>1,248</dd></div>
+        <div><dt>Bassins</dt><dd>4</dd></div>
+      </dl>
+      <div class="graphe" id="g-etude-chla">
+        <h4>Rapport MCOMS / capteur ECO par bassin</h4>
+        <p class="sous">Moyenne pondérée par le nombre de profils. Le trait vertical marque 1 : les deux capteurs donnent la même chlorophylle intégrée.</p>
+        <div class="dessin"></div>
+      </div>
+      <div class="liens"><a class="bouton principal" href="https://github.com/antoine250/ETUDE_CHLA" target="_blank" rel="noopener">Ouvrir le dépôt</a></div>
+    </div>
+    <div class="p-figures">
+      <figure>
+        <button class="vignette" type="button" data-note="Bassin Atlantique, capteurs ECO_FLBB et ECO_FLBB_AP2 : histogramme de la chlorophylle intégrée 0-200 m (1&#8239;392 profils) et position des profils co-localisés avec MCOMS."><img src="img/etude-chla-1.jpg" width="1600" height="800" alt="Histogramme et carte des profils co-localisés, Atlantique, ECO_FLBB" loading="lazy"></button>
+        <figcaption><strong>Atlantique, ECO_FLBB et FLBB_AP2</strong></figcaption>
+      </figure>
+      <div class="petites seule">
+        <figure>
+          <button class="vignette" type="button" data-note="Bassin Austral, capteurs MCOMS (FLBB2 et FLBBCD) : histogramme de la chlorophylle intégrée 0-200 m et position des profils co-localisés."><img src="img/etude-chla-2.jpg" width="1600" height="800" alt="Histogramme et carte des profils co-localisés, Austral, MCOMS" loading="lazy"></button>
+          <figcaption>Austral, MCOMS</figcaption>
+        </figure>
+      </div>
+    </div>
+  </article>
+
+  <h3 class="etat-titre" style="margin-top: 8px">Autres dépôts</h3>
+  <ul class="depots">
+    <li><a href="https://github.com/antoine250/read_DOI" target="_blank" rel="noopener">antoine250/read_DOI</a><p>Ce dépôt : la page des projets est dans le dossier <code>projets/</code>.</p></li>
+    <li><a href="https://github.com/antoine250/parquet_argo_bbp700" target="_blank" rel="noopener">antoine250/parquet_argo_bbp700</a><p>Créé en octobre 2025, encore vide.</p></li>
+    <li><a href="https://github.com/antoine250/air_provor" target="_blank" rel="noopener">antoine250/air_provor</a><p>Vide.</p></li>
+    <li><a href="https://github.com/antoine250/DM" target="_blank" rel="noopener">antoine250/DM</a><p>Copie, 2018. Scripts R du mode différé : DOXY (PPOX, Winkler, WOA) et NITRATE.</p></li>
+    <li><a href="https://github.com/antoine250/READ_ARGO" target="_blank" rel="noopener">antoine250/READ_ARGO</a><p>Copie, 2016. Lecture des fichiers Coriolis et des métadonnées en R.</p></li>
+    <li><a href="https://github.com/euroargodev/publicQCforum" target="_blank" rel="noopener">euroargodev/publicQCforum</a><p>Forum public Euro-Argo pour demander une expertise QC.</p></li>
+  </ul>
+</section>
+
+<footer class="pied">
+  <p>Page faite par Claude le 26 octobre 2026 à partir des pages de graphiques de chaque session et des dépôts GitHub. Les figures sont des copies réduites ; les originaux et toutes les autres pages sont dans les galeries.</p>
+  <p>Les liens claude.ai s'ouvrent avec ton compte Claude. Source de la page : dépôt <code>antoine250/read_DOI</code>, dossier <code>projets/</code>.</p>
+</footer>
+
+</div>
+
+<div id="bulle" hidden></div>
+
+<dialog id="visio" aria-labelledby="v-titre">
+  <div class="v-contenu">
+    <div class="v-barre">
+      <div class="v-titre"><strong id="v-titre"></strong><span id="v-projet"></span></div>
+      <button type="button" id="v-prec" aria-label="Figure précédente">←</button>
+      <span class="v-compteur" id="v-compteur"></span>
+      <button type="button" id="v-suiv" aria-label="Figure suivante">→</button>
+      <a id="v-lien" href="#" target="_blank" rel="noopener">Galerie complète</a>
+      <button type="button" id="v-fermer">Fermer</button>
+    </div>
+    <div class="v-cadre"><img id="v-img" alt=""></div>
+    <p class="v-note" id="v-note"></p>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  var NS = "http://www.w3.org/2000/svg";
+  var bulle = document.getElementById("bulle");
+  function fr(v, d) { return v.toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d }); }
+  function el(nom, attrs, parent) {
+    var e = document.createElementNS(NS, nom);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function montrerBulle(x, y, valeur, texte) {
+    bulle.replaceChildren();
+    var s = document.createElement("strong"); s.textContent = valeur;
+    var t = document.createElement("span"); t.textContent = texte;
+    bulle.append(s, t); bulle.hidden = false;
+    var w = bulle.offsetWidth, h = bulle.offsetHeight;
+    var gx = Math.min(x + 14, window.innerWidth - w - 8), gy = y - h - 10;
+    if (gy < 8) gy = y + 16;
+    bulle.style.left = Math.max(8, gx) + "px"; bulle.style.top = gy + "px";
+  }
+  function cacherBulle() { bulle.hidden = true; }
+
+  // Barre horizontale : coin arrondi (4 px) au bout de la valeur, carrée sur la ligne de base.
+  function cheminBarre(x0, x1, y, h) {
+    var r = Math.min(4, (x1 - x0), h / 2);
+    if (x1 - x0 < 1) return "";
+    return "M" + x0 + "," + y + "H" + (x1 - r) + "Q" + x1 + "," + y + " " + x1 + "," + (y + r) +
+      "V" + (y + h - r) + "Q" + x1 + "," + (y + h) + " " + (x1 - r) + "," + (y + h) + "H" + x0 + "Z";
+  }
+
+  // cfg : { lignes: [{nom, sous}], series: [{nom, couleur}], valeurs: [[v par série]], max, pas, format, unite, ref, bulle(i, s) }
+  function barres(conteneur, cfg) {
+    function dessiner() {
+      var W = Math.max(280, conteneur.clientWidth);
+      var etroit = W < 420;
+      var gauche = etroit ? 112 : 150, droite = 54;
+      var nS = cfg.series.length, hB = nS === 1 ? 14 : 11, ecart = 2;
+      var aSous = cfg.lignes.some(function (l) { return l.sous; });
+      var hGroupe = nS * hB + (nS - 1) * ecart, hLigne = aSous ? 38 : hGroupe + (nS === 1 ? 14 : 16);
+      var haut = 6, H = haut + cfg.lignes.length * hLigne + 26;
+      var x = function (v) { return gauche + (W - gauche - droite) * v / cfg.max; };
+      var svg = el("svg", { viewBox: "0 0 " + W + " " + H, width: "100%", role: "img", "aria-label": cfg.titre });
+      for (var t = 0; t <= cfg.max + 1e-9; t += cfg.pas) {
+        el("line", { x1: x(t), x2: x(t), y1: haut, y2: H - 22, "class": "grille" }, svg);
+        var tt = el("text", { x: x(t), y: H - 6, "text-anchor": "middle", "class": "axe" }, svg);
+        tt.textContent = cfg.format(t, true);
+      }
+      if (cfg.ref !== undefined) el("line", { x1: x(cfg.ref), x2: x(cfg.ref), y1: haut - 2, y2: H - 20, "class": "ref" }, svg);
+      cfg.lignes.forEach(function (l, i) {
+        var y0 = haut + i * hLigne + (hLigne - hGroupe) / 2;
+        var c = el("text", { x: gauche - 10, y: y0 + hGroupe / 2 + (l.sous ? -2 : 4), "text-anchor": "end", "class": "cat" }, svg);
+        c.textContent = l.nom;
+        if (l.sous) {
+          var s = el("text", { x: gauche - 10, y: y0 + hGroupe / 2 + 12, "text-anchor": "end", "class": "souscat" }, svg);
+          s.textContent = l.sous;
+        }
+        cfg.series.forEach(function (serie, k) {
+          var v = cfg.valeurs[i][k], y = y0 + k * (hB + ecart);
+          var zy = nS === 1 ? haut + i * hLigne : y - 1, zh = nS === 1 ? hLigne : hB + ecart;
+          var zone = el("rect", { x: 0, y: zy, width: W, height: zh, "class": "zone", tabindex: "0" }, svg);
+          var d = cheminBarre(x(0), x(v), y, hB);
+          el("path", { d: d || "M0,0", style: "fill:" + serie.couleur, "class": "barre" }, svg);
+          var lab = el("text", { x: x(v) + 6, y: y + hB / 2 + 4, "class": "chiffre" }, svg);
+          lab.textContent = cfg.format(v);
+          var info = cfg.bulle(i, k);
+          zone.setAttribute("aria-label", info[0] + ", " + info[1]);
+          zone.addEventListener("pointermove", function (e) { montrerBulle(e.clientX, e.clientY, info[0], info[1]); });
+          zone.addEventListener("pointerleave", cacherBulle);
+          zone.addEventListener("focus", function () {
+            var r = zone.getBoundingClientRect(); montrerBulle(r.left + r.width / 2, r.top, info[0], info[1]);
+          });
+          zone.addEventListener("blur", cacherBulle);
+        });
+      });
+      conteneur.replaceChildren(svg);
+    }
+    dessiner();
+    var largeur = conteneur.clientWidth;
+    if (window.ResizeObserver) new ResizeObserver(function () {
+      if (Math.abs(conteneur.clientWidth - largeur) > 4) { largeur = conteneur.clientWidth; dessiner(); }
+    }).observe(conteneur);
+  }
+
+  function legende(graphe, series) {
+    var ul = document.createElement("ul"); ul.className = "cle";
+    series.forEach(function (s) {
+      var li = document.createElement("li"), i = document.createElement("i");
+      i.style.background = s.couleur; li.append(i, document.createTextNode(s.nom)); ul.appendChild(li);
+    });
+    graphe.querySelector(".dessin").before(ul);
+  }
+
+  function tableau(graphe, entetes, lignes) {
+    var d = document.createElement("details"); d.className = "valeurs";
+    var s = document.createElement("summary"); s.textContent = "Voir les valeurs";
+    var w = document.createElement("div"); w.className = "tableau-valeurs";
+    var t = document.createElement("table"), tr = document.createElement("tr");
+    entetes.forEach(function (h) { var th = document.createElement("th"); th.textContent = h; tr.appendChild(th); });
+    t.appendChild(tr);
+    lignes.forEach(function (l) {
+      var r = document.createElement("tr");
+      l.forEach(function (c, k) { var td = document.createElement("td"); td.textContent = c; if (k > 0) td.className = "n"; r.appendChild(td); });
+      t.appendChild(r);
+    });
+    w.appendChild(t); d.append(s, w); graphe.appendChild(d);
+  }
+
+  function jeton(n) { return "var(" + n + ")"; }
+
+  // Facteur Sauzède : « % final » par DAC (tableau du 21 octobre 2026)
+  var DAC = [
+    ["AOML", 81433, 99.70], ["Coriolis", 65300, 98.02], ["INCOIS", 14295, 99.32], ["CSIRO", 13642, 99.85],
+    ["BODC", 7738, 99.95], ["MEDS", 6063, 100.00], ["CSIO", 5340, 91.52], ["JMA", 4330, 0.00]
+  ];
+  var gS = document.getElementById("g-sauzede");
+  barres(gS.querySelector(".dessin"), {
+    titre: "Part retraitée par DAC",
+    lignes: DAC.map(function (d) { return { nom: d[0], sous: fr(d[1], 0) + " profils" }; }),
+    series: [{ nom: "% final", couleur: jeton("--accent") }],
+    valeurs: DAC.map(function (d) { return [d[2]]; }),
+    max: 100, pas: 25,
+    format: function (v, axe) { return axe ? v + " %" : fr(v, 1) + " %"; },
+    bulle: function (i) { return [fr(DAC[i][2], 2) + " % retraités", DAC[i][0] + " · " + fr(DAC[i][1], 0) + " profils CHLA"]; }
+  });
+  tableau(gS, ["DAC", "Profils CHLA", "% final"], DAC.map(function (d) { return [d[0], fr(d[1], 0), fr(d[2], 2)]; }));
+
+  // REFINE : prélèvements avec TChla HPLC par campagne
+  var CAMP = [
+    ["TONGA", "nov. 2019", 113, 9], ["DARK EDGE", "oct. 2021", 60, 9], ["CE22009", "mai-juin 2022", 27, 7],
+    ["MEIO (Monaco)", "oct.-nov. 2022", 117, 12], ["OISO 33", "janv.-févr. 2023", 131, 16],
+    ["PIRATA", "mars-avr. 2023", 204, 11], ["KEBBAB", "août-sept. 2023", 132, 20]
+  ];
+  var gR = document.getElementById("g-refine");
+  barres(gR.querySelector(".dessin"), {
+    titre: "Prélèvements HPLC par campagne",
+    lignes: CAMP.map(function (c) { return { nom: c[0], sous: c[1] }; }),
+    series: [{ nom: "Prélèvements", couleur: jeton("--accent") }],
+    valeurs: CAMP.map(function (c) { return [c[2]]; }),
+    max: 250, pas: 50,
+    format: function (v) { return fr(v, 0); },
+    bulle: function (i) { return [CAMP[i][2] + " prélèvements", CAMP[i][0] + " · " + CAMP[i][3] + " stations · " + CAMP[i][1]]; }
+  });
+  tableau(gR, ["Campagne", "Date", "Stations", "Prélèvements HPLC"], CAMP.map(function (c) { return [c[0], c[1], String(c[3]), String(c[2])]; }));
+
+  // ETUDE_CHLA : rapport MCOMS / ECO par bassin et famille de capteurs
+  var BASSINS = ["Atlantique", "Indien", "Pacifique", "Austral", "Tous océans"];
+  var FAM = [
+    { nom: "ECO_FLBB et FLBB_AP2", couleur: jeton("--s1"), r: [1.508, 1.172, 1.240, 1.048, 1.222], n: [1392, 2664, 2269, 1776, 8101] },
+    { nom: "ECO_FLBB2, FLBBCD et FLBBFL", couleur: jeton("--s2"), r: [1.217, 1.184, 1.585, 1.372, 1.292], n: [2057, 1420, 915, 507, 4899] }
+  ];
+  var gE = document.getElementById("g-etude-chla");
+  legende(gE, FAM);
+  barres(gE.querySelector(".dessin"), {
+    titre: "Rapport MCOMS / capteur ECO par bassin",
+    lignes: BASSINS.map(function (b) { return { nom: b }; }),
+    series: FAM, ref: 1,
+    valeurs: BASSINS.map(function (_, i) { return FAM.map(function (f) { return f.r[i]; }); }),
+    max: 1.75, pas: 0.5,
+    format: function (v, axe) { return axe ? fr(v, 1) : fr(v, 2); },
+    bulle: function (i, k) { return [fr(FAM[k].r[i], 3), BASSINS[i] + " · " + FAM[k].nom + " · " + fr(FAM[k].n[i], 0) + " profils"]; }
+  });
+  tableau(gE, ["Bassin", "Rapport, ECO_FLBB", "Profils", "Rapport, ECO_FLBB2/CD/FL", "Profils"],
+    BASSINS.map(function (b, i) { return [b, fr(FAM[0].r[i], 3), fr(FAM[0].n[i], 0), fr(FAM[1].r[i], 3), fr(FAM[1].n[i], 0)]; }));
+
+  // Visionneuse : agrandit une figure, avec la figure précédente / suivante du même projet
+  var visio = document.getElementById("visio"), vImg = document.getElementById("v-img");
+  var courant = { liste: [], i: 0, projet: null };
+  function afficher(i) {
+    var l = courant.liste; courant.i = (i + l.length) % l.length;
+    var b = l[courant.i], img = b.querySelector("img"), fig = b.closest("figure");
+    var titre = fig.querySelector("figcaption strong") || fig.querySelector("figcaption");
+    vImg.src = img.getAttribute("src"); vImg.alt = img.alt;
+    document.getElementById("v-titre").textContent = titre.textContent;
+    document.getElementById("v-projet").textContent = courant.projet.querySelector("h3").firstChild.textContent.trim();
+    document.getElementById("v-note").textContent = b.dataset.note || "";
+    document.getElementById("v-compteur").textContent = (courant.i + 1) + " / " + l.length;
+    document.getElementById("v-lien").href = courant.projet.dataset.galerie;
+    document.getElementById("v-lien").textContent = courant.projet.dataset.galerie.indexOf("github") > 0 ? "Dépôt GitHub" : "Galerie complète";
+    vImg.parentNode.classList.remove("grand");
+    vImg.parentNode.scrollTop = 0; vImg.parentNode.scrollLeft = 0;
+  }
+  document.querySelectorAll(".vignette").forEach(function (b) {
+    b.addEventListener("click", function () {
+      courant.projet = b.closest(".projet");
+      courant.liste = Array.prototype.slice.call(courant.projet.querySelectorAll(".vignette"));
+      afficher(courant.liste.indexOf(b));
+      if (typeof visio.showModal === "function") visio.showModal(); else visio.setAttribute("open", "");
+    });
+  });
+  function fermer() { if (visio.open) { if (typeof visio.close === "function") visio.close(); else visio.removeAttribute("open"); } }
+  document.getElementById("v-fermer").addEventListener("click", fermer);
+  document.getElementById("v-prec").addEventListener("click", function () { afficher(courant.i - 1); });
+  document.getElementById("v-suiv").addEventListener("click", function () { afficher(courant.i + 1); });
+  vImg.addEventListener("click", function () { vImg.parentNode.classList.toggle("grand"); });
+  visio.addEventListener("click", function (e) { if (e.target === visio) fermer(); });
+  visio.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight") { afficher(courant.i + 1); e.preventDefault(); }
+    else if (e.key === "ArrowLeft") { afficher(courant.i - 1); e.preventDefault(); }
+  });
+})();
+</script>
