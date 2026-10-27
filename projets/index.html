@@ -226,7 +226,7 @@ dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
 <header class="tete">
   <p class="surtitre">VM oao2022 · Mac · GitHub antoine250</p>
   <h1>Projets BGC-Argo</h1>
-  <p class="chapo">Neuf études sur les capteurs bio-optiques des flotteurs BGC-Argo et du profileur CIDRE : chlorophylle, rétrodiffusion à 700 nm, lumière. <strong>1&#8239;189 pages de graphiques</strong> en tout ; chaque projet montre ses figures principales et renvoie vers sa page complète. État au 27 octobre 2026.</p>
+  <p class="chapo">Onze études sur les capteurs bio-optiques des flotteurs BGC-Argo et du profileur CIDRE : chlorophylle, rétrodiffusion à 700 nm, lumière. <strong>1&#8239;189 pages de graphiques</strong> en tout ; chaque projet montre ses figures principales et renvoie vers sa page complète. État au 27 octobre 2026.</p>
 </header>
 
 <section aria-labelledby="titre-etat">
@@ -244,9 +244,19 @@ dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
       <div class="l-meta"><span>VM</span><span class="nb">22 graphiques</span><span>21 oct. 2026</span></div>
     </li>
     <li class="ligne">
-      <div class="l-titre"><a href="#metrique">Étude métrique V2</a><span class="mesure">Suivi de la base, CHLA et BBP700 par capteur</span></div>
+      <div class="l-titre"><a href="#metrique">Étude métrique V2</a><span class="mesure">Fichier métrique quotidien et suivi de la base</span></div>
       <span class="etat ok">Actif</span>
-      <div class="l-meta"><span>VM · GitHub</span><span class="nb">509 pages</span><span>27 oct. 2026</span></div>
+      <div class="l-meta"><span>VM · GitHub</span><span class="nb">62 pages</span><span>27 oct. 2026</span></div>
+    </li>
+    <li class="ligne">
+      <div class="l-titre"><a href="#metrique-chla">CHLA face à OC5</a><span class="mesure">Métrique V2 · ECO_2, ECO_3 et MCOMS contre le satellite</span></div>
+      <span class="etat nouveau">Nouveau</span>
+      <div class="l-meta"><span>VM</span><span class="nb">154 pages</span><span>27 oct. 2026</span></div>
+    </li>
+    <li class="ligne">
+      <div class="l-titre"><a href="#metrique-bbp">BBP700 face à SOCA</a><span class="mesure">Métrique V2 · FLBB, triplets et MCOMS contre la climatologie</span></div>
+      <span class="etat nouveau">Nouveau</span>
+      <div class="l-meta"><span>VM</span><span class="nb">293 pages</span><span>27 oct. 2026</span></div>
     </li>
     <li class="ligne">
       <div class="l-titre"><a href="#oc5">CHLA / OC5 jour – nuit</a><span class="mesure">Flotteur contre satellite</span></div>
@@ -283,7 +293,7 @@ dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
   </ul>
   <p class="legende-etat">
     <span class="etat ok">Actif : session Claude ouverte sur la VM</span>
-    <span class="etat nouveau">Nouveau : apparu depuis la mise à jour précédente</span>
+    <span class="etat nouveau">Nouveau : ajouté à la page cette semaine</span>
     <span class="etat archive">Archivé : session terminée</span>
     <span>Date : dernière mise à jour des graphiques</span>
   </p>
@@ -291,7 +301,7 @@ dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
 
 <section class="groupe" aria-labelledby="g-vm">
   <h2 id="g-vm">Sur la VM oao2022</h2>
-  <p>Six projets sur le serveur, chacun avec ses pages de graphiques.</p>
+  <p>Huit projets sur le serveur, chacun avec ses pages de graphiques. Trois d'entre eux lisent le fichier métrique V2 produit chaque nuit.</p>
 
   <article class="projet" id="chla435" data-galerie="https://claude.ai/artifact/VeyUFmpXRrTi1sqrMFvcbu">
     <div class="p-texte">
@@ -362,44 +372,116 @@ dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
     </div>
   </article>
 
-  <article class="projet" id="metrique" data-galerie="https://claude.ai/artifact/CQou6hnrZ72suKwQXZ53zz">
+  <article class="projet" id="metrique" data-galerie="https://claude.ai/artifact/Fh22XT616xihE1MCWTW6Rv">
     <div class="p-texte">
       <p class="p-tags"><span class="etat ok">Actif</span><span class="ou">VM oao2022 · GitHub</span></p>
-      <h3>Étude métrique V2<span class="mesure">Le fichier métrique quotidien et les trois études qui le lisent</span></h3>
-      <p class="p-desc">Chaque nuit, l'étude produit un fichier de métriques sur tous les profils BGC-Argo (<code>/data3/ETUDE_METRIQUE_V2</code>). Depuis le 26 octobre, trois études le lisent, chacune avec sa page de graphiques : le suivi quotidien de la base (fichiers B modifiés par DAC, évolution des paramètres, CHLA intégrée 0-150 m) ; la CHLA des ECO_2, ECO_3 et MCOMS face au satellite OC5, avec triple collocation ; le BBP700 des FLBB, triplets et MCOMS face à la climatologie SOCA, en surface et à 900-950 m.</p>
+      <h3>Étude métrique V2<span class="mesure">Le fichier métrique quotidien et le suivi de la base</span></h3>
+      <p class="p-desc">Chaque nuit, l'étude produit un fichier de métriques sur tous les profils BGC-Argo (<code>/data3/ETUDE_METRIQUE_V2</code>) : CHLA, fluorescence, BBP700 et matchups satellite. Le suivi de la base le lit pour montrer les fichiers B modifiés par DAC, l'évolution de chaque paramètre jour après jour et la CHLA intégrée 0-150 m. Deux autres études le lisent aussi : CHLA face à OC5 et BBP700 face à SOCA, juste en dessous.</p>
       <dl class="chiffres">
         <div><dt>Profils, fichier du 27 oct.</dt><dd>191&#8239;768</dd></div>
         <div><dt>Flotteurs</dt><dd>1&#8239;522</dd></div>
-        <div><dt>Profils avec une CHLA OC5</dt><dd>159&#8239;589</dd></div>
-        <div><dt>Graphiques</dt><dd>26 <small>509 pages</small></dd></div>
+        <div><dt>Fichiers quotidiens</dt><dd>136</dd></div>
+        <div><dt>Nouveaux profils le 27 oct.</dt><dd>83</dd></div>
       </dl>
       <div class="graphe" id="g-metrique">
         <h4>Profils dans le fichier métrique quotidien</h4>
         <p class="sous">136 fichiers, du 28 mai au 27 octobre 2026 ; les segments droits couvrent les jours sans fichier.</p>
         <div class="dessin"></div>
       </div>
-      <p class="p-note">Le 27 octobre, le nombre de profils avec une CHLA OC5 est passé de 143&#8239;500 à 159&#8239;589.</p>
       <div class="liens">
-        <a class="bouton principal" href="https://claude.ai/artifact/5mcDQY8bPgqWs46afYyF8H" target="_blank" rel="noopener">Synthèse du fichier</a>
-        <a class="bouton" href="https://claude.ai/artifact/Fh22XT616xihE1MCWTW6Rv" target="_blank" rel="noopener">Suivi de la base · 62 p.</a>
-        <a class="bouton" href="https://claude.ai/artifact/PJrDCLZt8fciG6NTXHJxTx" target="_blank" rel="noopener">CHLA / OC5 · 154 p.</a>
-        <a class="bouton" href="https://claude.ai/artifact/QRzdbm9R412nJHgWJRAEhP" target="_blank" rel="noopener">BBP700 / SOCA · 293 p.</a>
+        <a class="bouton principal" href="https://claude.ai/artifact/Fh22XT616xihE1MCWTW6Rv" target="_blank" rel="noopener">Suivi de la base · 62 p.</a>
+        <a class="bouton" href="https://claude.ai/artifact/5mcDQY8bPgqWs46afYyF8H" target="_blank" rel="noopener">Synthèse du fichier</a>
+        <a class="bouton" href="https://claude.ai/artifact/CQou6hnrZ72suKwQXZ53zz" target="_blank" rel="noopener">Accueil des graphiques</a>
         <a class="bouton" href="https://github.com/antoine250/ETUDE_METRIQUE_V2" target="_blank" rel="noopener">Dépôt GitHub</a>
       </div>
     </div>
     <div class="p-figures">
       <figure>
-        <button class="vignette" type="button" data-note="Facteur d'erreur de chaque capteur (ECO_2, ECO_3, MCOMS), année par année et en cumulé. Plus proche de 1 : meilleure précision ; pointillé : valeur idéale. CSV du 27 octobre 2026."><img src="img/metrique-1.jpg" width="1400" height="728" alt="Triple collocation des trois capteurs de chlorophylle" loading="lazy"></button>
+        <button class="vignette" type="button" data-note="Nombre de fichiers B modifiés par jour et par DAC, sur les 6 mois jusqu'au 27 octobre 2026."><img src="img/metrique-1.jpg" width="1400" height="778" alt="Nombre de fichiers B modifiés par jour et par DAC" loading="lazy"></button>
+        <figcaption><strong>Fichiers B modifiés par jour et par DAC</strong> · 6 mois</figcaption>
+      </figure>
+      <div class="petites">
+        <figure>
+          <button class="vignette" type="button" data-note="Pour chaque paramètre du fichier métrique, variation de la médiane d'un jour à l'autre, du 28 mai au 27 octobre 2026. Bleu : baisse, rouge : hausse ; gris : pas de fichier ce jour-là."><img src="img/metrique-2.jpg" width="1400" height="993" alt="Carte de couleurs de la variation jour par jour de chaque paramètre" loading="lazy"></button>
+          <figcaption>Variation jour par jour des paramètres</figcaption>
+        </figure>
+        <figure>
+          <button class="vignette" type="button" data-note="CHLA (fluorescence) intégrée 0-150 m depuis le 1er juin 2026 : médiane, moyenne et écart entre quartiles, fichier par fichier."><img src="img/metrique-3.jpg" width="1400" height="993" alt="Série temporelle de la CHLA intégrée 0-150 m" loading="lazy"></button>
+          <figcaption>CHLA intégrée 0-150 m depuis juin</figcaption>
+        </figure>
+      </div>
+    </div>
+  </article>
+
+  <article class="projet" id="metrique-chla" data-galerie="https://claude.ai/artifact/PJrDCLZt8fciG6NTXHJxTx">
+    <div class="p-texte">
+      <p class="p-tags"><span class="etat nouveau">Nouveau</span><span class="ou">VM oao2022 · ETUDE_CHLA_OC5</span></p>
+      <h3>CHLA face à OC5<span class="mesure">Étude métrique V2 : les trois familles de capteurs face au satellite</span></h3>
+      <p class="p-desc">Compare la CHLA des ECO_2, ECO_3 et MCOMS à la chlorophylle satellite OC5 : boîtes de 10° × 10° communes aux trois capteurs, deux fichiers (1er juin et 27 octobre) sur les mêmes échelles, CHLA de surface, et triple collocation pour estimer l'erreur de chaque capteur, année par année et en cumulé.</p>
+      <dl class="chiffres">
+        <div><dt>Profils avec une CHLA OC5</dt><dd>159&#8239;589</dd></div>
+        <div><dt>Matchups de surface</dt><dd>117&#8239;597</dd></div>
+        <div><dt>Graphiques</dt><dd>7 <small>154 pages</small></dd></div>
+        <div><dt>Données</dt><dd>27 oct. <small>2026</small></dd></div>
+      </dl>
+      <div class="graphe" id="g-metrique-chla">
+        <h4>Profils par famille de capteur CHLA</h4>
+        <p class="sous">Fichier métrique du 27 octobre 2026, d'après le modèle de capteur de chaque profil.</p>
+        <div class="dessin"></div>
+      </div>
+      <p class="p-note">Le 27 octobre, le nombre de profils avec une CHLA OC5 est passé de 143&#8239;500 à 159&#8239;589.</p>
+      <div class="liens"><a class="bouton principal" href="https://claude.ai/artifact/PJrDCLZt8fciG6NTXHJxTx" target="_blank" rel="noopener">Ouvrir les 154 pages</a></div>
+    </div>
+    <div class="p-figures">
+      <figure>
+        <button class="vignette" type="button" data-note="Facteur d'erreur de chaque capteur (ECO_2, ECO_3, MCOMS), année par année et en cumulé. Plus proche de 1 : meilleure précision ; pointillé : valeur idéale. CSV du 27 octobre 2026."><img src="img/chlaoc5-1.jpg" width="1400" height="728" alt="Triple collocation des trois capteurs de chlorophylle" loading="lazy"></button>
         <figcaption><strong>Triple collocation ECO_2 / ECO_3 / MCOMS</strong></figcaption>
       </figure>
       <div class="petites">
         <figure>
-          <button class="vignette" type="button" data-note="Nombre de fichiers B modifiés par jour et par DAC, sur les 6 mois jusqu'au 27 octobre 2026."><img src="img/metrique-2.jpg" width="1400" height="778" alt="Nombre de fichiers B modifiés par jour et par DAC" loading="lazy"></button>
-          <figcaption>Fichiers B modifiés par DAC</figcaption>
+          <button class="vignette" type="button" data-note="CHLA ajustée médiane 0-10 m du flotteur contre la CHLA OC5, tous capteurs : 117&#8239;597 matchups. Tirets : égalité 1:1, échelles logarithmiques."><img src="img/chlaoc5-2.jpg" width="1400" height="1082" alt="Nuage de points CHLA de surface contre OC5" loading="lazy"></button>
+          <figcaption>CHLA de surface contre OC5</figcaption>
         </figure>
         <figure>
-          <button class="vignette" type="button" data-note="Localisation des matchups BBP700 médiane 900-950 m, dans les zones et périodes communes aux FLBB, triplets et MCOMS. CSV du 27 octobre 2026."><img src="img/metrique-3.jpg" width="1400" height="850" alt="Carte des matchups BBP700 entre 900 et 950 m" loading="lazy"></button>
-          <figcaption>Matchups BBP700 à 900-950 m</figcaption>
+          <button class="vignette" type="button" data-note="Distribution de la CHLA et du rapport CHLA / OC5 pour chaque famille de capteur, dans les zones communes aux trois. Ligne pointillée : rapport égal à 1."><img src="img/chlaoc5-3.jpg" width="1400" height="850" alt="Histogrammes de la CHLA et du rapport CHLA sur OC5 par capteur" loading="lazy"></button>
+          <figcaption>Histogrammes par capteur</figcaption>
+        </figure>
+      </div>
+    </div>
+  </article>
+
+  <article class="projet" id="metrique-bbp" data-galerie="https://claude.ai/artifact/QRzdbm9R412nJHgWJRAEhP">
+    <div class="p-texte">
+      <p class="p-tags"><span class="etat nouveau">Nouveau</span><span class="ou">VM oao2022 · ETUDE_BBP700_SOCA</span></p>
+      <h3>BBP700 face à SOCA<span class="mesure">Étude métrique V2 : les trois familles de capteurs face à la climatologie</span></h3>
+      <p class="p-desc">Compare le BBP700 des FLBB, triplets et MCOMS à la climatologie SOCA, boîte par boîte, en surface (0-10 m) et en profondeur (900-950 m). Teste deux corrections d'offset à 900-950 m, suit la dispersion par année de déploiement et de profil, et mesure l'effet de la correction profonde en surface. Le même programme tourne aussi en mode CHLA, avec OC5 comme référence.</p>
+      <dl class="chiffres">
+        <div><dt>Profils avec BBP700 0-10 m</dt><dd>174&#8239;539</dd></div>
+        <div><dt>Profils avec BBP700 900-950 m</dt><dd>161&#8239;151</dd></div>
+        <div><dt>Graphiques</dt><dd>16 <small>293 pages</small></dd></div>
+        <div><dt>Données</dt><dd>27 oct. <small>2026</small></dd></div>
+      </dl>
+      <div class="graphe" id="g-metrique-bbp">
+        <h4>Profils BBP700 par mode de données</h4>
+        <p class="sous">Fichier métrique du 27 octobre 2026. R : temps réel ; A : temps réel ajusté ; D : mode différé.</p>
+        <div class="dessin"></div>
+      </div>
+      <p class="p-note">Depuis le 26 octobre, les caches SOCA BBP sont rangés avec la climatologie, dans <code>/data3/SOCA_BBP_POC_2025/</code>.</p>
+      <div class="liens"><a class="bouton principal" href="https://claude.ai/artifact/QRzdbm9R412nJHgWJRAEhP" target="_blank" rel="noopener">Ouvrir les 293 pages</a></div>
+    </div>
+    <div class="p-figures">
+      <figure>
+        <button class="vignette" type="button" data-note="Localisation des matchups BBP700 médiane 900-950 m, dans les zones et périodes communes aux FLBB, triplets et MCOMS. CSV du 27 octobre 2026."><img src="img/bbp-1.jpg" width="1400" height="850" alt="Carte des matchups BBP700 entre 900 et 950 m" loading="lazy"></button>
+        <figcaption><strong>Matchups BBP700 à 900-950 m</strong> · zones communes aux trois capteurs</figcaption>
+      </figure>
+      <div class="petites">
+        <figure>
+          <button class="vignette" type="button" data-note="Localisation des observations BBP700 médiane 0-10 m, dans les boîtes et périodes communes aux FLBB, triplets et MCOMS."><img src="img/bbp-2.jpg" width="1400" height="850" alt="Carte des observations BBP700 entre 0 et 10 m" loading="lazy"></button>
+          <figcaption>Observations BBP700 à 0-10 m</figcaption>
+        </figure>
+        <figure>
+          <button class="vignette" type="button" data-note="Flotteurs déployés en 2014 : couverture des boîtes, BBP700 brut à 900-950 m et rapport BBP700 / SOCA par capteur. Une page par année de déploiement dans la galerie."><img src="img/bbp-3.jpg" width="1400" height="850" alt="Distributions du BBP700 pour la cohorte de déploiement 2014" loading="lazy"></button>
+          <figcaption>Cohorte de déploiement 2014</figcaption>
         </figure>
       </div>
     </div>
@@ -894,6 +976,40 @@ dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
     bulle: function (p) { return [fr(p.v, 0) + " profils", "Fichier du " + dateFr(p.t) + " · " + fr(p.flotteurs, 0) + " flotteurs"]; }
   });
   tableau(gM, ["Fichier", "Profils", "Flotteurs"], HISTO.map(function (r) { return [r[0], fr(r[1], 0), fr(r[2], 0)]; }));
+
+  // CHLA face à OC5 : profils par famille de capteur CHLA (fichier métrique du 27 octobre 2026)
+  var FAMILLES = [
+    ["ECO FLBB", "ECO_2", 93548, "FLBB_AP2, FLBB, FLBB2, FLBB_2K, FLBBFL, FLBBFL_AP2"],
+    ["ECO triplet", "ECO_3", 66402, "FLBBCD, FLBBCD_AP2"],
+    ["MCOMS", "", 27696, "MCOMS_FLBBCD, MCOMS_FLBB2"],
+    ["Inconnu", "", 2565, "modèle non renseigné"],
+    ["ECO FLNTU", "", 1557, "FLNTU"]
+  ];
+  var gMC = document.getElementById("g-metrique-chla");
+  barres(gMC.querySelector(".dessin"), {
+    titre: "Profils par famille de capteur CHLA",
+    lignes: FAMILLES.map(function (f) { return { nom: f[0], sous: f[1] }; }),
+    series: [{ nom: "Profils", couleur: jeton("--accent") }],
+    valeurs: FAMILLES.map(function (f) { return [f[2]]; }),
+    max: 100000, pas: 25000,
+    format: function (v, axe) { return axe ? (v ? fr(v / 1000, 0) + " k" : "0") : fr(v, 0); },
+    bulle: function (i) { return [fr(FAMILLES[i][2], 0) + " profils", FAMILLES[i][0] + " · " + FAMILLES[i][3]]; }
+  });
+  tableau(gMC, ["Famille", "Profils", "Modèles"], FAMILLES.map(function (f) { return [f[0], fr(f[2], 0), f[3]]; }));
+
+  // BBP700 face à SOCA : profils par mode de données BBP700 (fichier métrique du 27 octobre 2026)
+  var MODES = [["A", "temps réel ajusté", 156497], ["R", "temps réel", 16930], ["D", "mode différé", 16776], ["Absent", "pas de BBP700", 1565]];
+  var gMB = document.getElementById("g-metrique-bbp");
+  barres(gMB.querySelector(".dessin"), {
+    titre: "Profils BBP700 par mode de données",
+    lignes: MODES.map(function (m) { return { nom: m[0], sous: m[1] }; }),
+    series: [{ nom: "Profils", couleur: jeton("--accent") }],
+    valeurs: MODES.map(function (m) { return [m[2]]; }),
+    max: 175000, pas: 50000,
+    format: function (v, axe) { return axe ? (v ? fr(v / 1000, 0) + " k" : "0") : fr(v, 0); },
+    bulle: function (i) { return [fr(MODES[i][2], 0) + " profils", "Mode " + MODES[i][0] + " · " + MODES[i][1]]; }
+  });
+  tableau(gMB, ["Mode", "Signification", "Profils"], MODES.map(function (m) { return [m[0], m[1], fr(m[2], 0)]; }));
 
   // STAT_RATIOMETRIE : mode et P90 du rapport mesuré / modèle (valeurs brutes, extraction du 27 octobre 2026)
   var CANAUX = [
