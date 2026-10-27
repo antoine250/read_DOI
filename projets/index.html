@@ -86,6 +86,7 @@ h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2rem, 5vw, 
 .etat.ok::before { background: var(--ok); }
 .etat.run::before { background: transparent; border: 2px solid var(--run); border-right-color: transparent; width: 11px; height: 11px; }
 .etat.archive::before { background: transparent; border: 2px solid var(--idle); }
+.etat.nouveau::before { background: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 .legende-etat { margin: 0 0 40px; font-size: 0.88rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 18px; }
 .legende-etat .etat { font-weight: 400; }
 
@@ -147,14 +148,14 @@ figcaption strong { color: var(--ink); font-weight: 600; }
 .dessin { width: 100%; min-height: 40px; }
 .dessin svg { display: block; width: 100%; height: auto; overflow: visible; }
 .dessin text { font-family: var(--sans); }
-.dessin .chiffre { font-family: var(--mono); font-size: 11.5px; fill: var(--muted); }
+.dessin .chiffre { font-family: var(--mono); font-size: 11.5px; fill: var(--muted); paint-order: stroke; stroke: var(--bg); stroke-width: 4px; stroke-linejoin: round; }
 .dessin .cat { font-size: 13px; fill: var(--ink); }
 .dessin .souscat { font-size: 11.5px; fill: var(--muted); }
 .dessin .axe { font-size: 11px; fill: var(--muted); font-family: var(--mono); }
 .dessin .grille { stroke: var(--line); stroke-width: 1; }
 .dessin .ref { stroke: var(--muted); stroke-width: 1.5; }
 .dessin .zone { fill: transparent; cursor: default; }
-.dessin path, .dessin text, .dessin line { pointer-events: none; }
+.dessin path, .dessin text, .dessin line, .dessin circle { pointer-events: none; }
 .dessin .zone:hover + .barre, .dessin .zone:focus + .barre { filter: brightness(1.15); }
 .dessin .zone:focus { outline: none; }
 .dessin .zone:focus-visible { stroke: var(--accent); stroke-width: 2; }
@@ -225,7 +226,7 @@ dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
 <header class="tete">
   <p class="surtitre">VM oao2022 · Mac · GitHub antoine250</p>
   <h1>Projets BGC-Argo</h1>
-  <p class="chapo">Huit études sur les capteurs bio-optiques des flotteurs BGC-Argo et du profileur CIDRE : chlorophylle, rétrodiffusion à 700 nm, lumière. <strong>1&#8239;046 pages de graphiques</strong> en tout ; chaque projet montre ses figures principales et renvoie vers sa page complète. État au 26 octobre 2026.</p>
+  <p class="chapo">Neuf études sur les capteurs bio-optiques des flotteurs BGC-Argo et du profileur CIDRE : chlorophylle, rétrodiffusion à 700 nm, lumière. <strong>1&#8239;189 pages de graphiques</strong> en tout ; chaque projet montre ses figures principales et renvoie vers sa page complète. État au 27 octobre 2026.</p>
 </header>
 
 <section aria-labelledby="titre-etat">
@@ -245,7 +246,7 @@ dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
     <li class="ligne">
       <div class="l-titre"><a href="#metrique">Étude métrique V2</a><span class="mesure">Suivi de la base, CHLA et BBP700 par capteur</span></div>
       <span class="etat ok">Actif</span>
-      <div class="l-meta"><span>VM · GitHub</span><span class="nb">404 pages</span><span>23 oct. 2026</span></div>
+      <div class="l-meta"><span>VM · GitHub</span><span class="nb">509 pages</span><span>27 oct. 2026</span></div>
     </li>
     <li class="ligne">
       <div class="l-titre"><a href="#oc5">CHLA / OC5 jour – nuit</a><span class="mesure">Flotteur contre satellite</span></div>
@@ -254,8 +255,13 @@ dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
     </li>
     <li class="ligne">
       <div class="l-titre"><a href="#soca">SOCA CLIM Light Argo</a><span class="mesure">Profils de lumière PAR et Ed</span></div>
-      <span class="etat run">En calcul</span>
+      <span class="etat ok">Actif</span>
       <div class="l-meta"><span>VM</span><span class="nb">106 graphiques</span><span>23 oct. 2026</span></div>
+    </li>
+    <li class="ligne">
+      <div class="l-titre"><a href="#ratiometrie">STAT_RATIOMETRIE</a><span class="mesure">Radiomètres face à un modèle par ciel clair</span></div>
+      <span class="etat nouveau">Nouveau</span>
+      <div class="l-meta"><span>Serveur</span><span class="nb">38 pages</span><span>27 oct. 2026</span></div>
     </li>
     <li class="groupe-ligne">Sur le Mac</li>
     <li class="ligne">
@@ -277,7 +283,7 @@ dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
   </ul>
   <p class="legende-etat">
     <span class="etat ok">Actif : session Claude ouverte sur la VM</span>
-    <span class="etat run">En calcul : une chaîne tourne</span>
+    <span class="etat nouveau">Nouveau : apparu depuis la mise à jour précédente</span>
     <span class="etat archive">Archivé : session terminée</span>
     <span>Date : dernière mise à jour des graphiques</span>
   </p>
@@ -285,7 +291,7 @@ dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
 
 <section class="groupe" aria-labelledby="g-vm">
   <h2 id="g-vm">Sur la VM oao2022</h2>
-  <p>Cinq sessions Claude tournent sur le serveur, chacune avec sa page de graphiques.</p>
+  <p>Six projets sur le serveur, chacun avec ses pages de graphiques.</p>
 
   <article class="projet" id="chla435" data-galerie="https://claude.ai/artifact/VeyUFmpXRrTi1sqrMFvcbu">
     <div class="p-texte">
@@ -359,31 +365,40 @@ dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
   <article class="projet" id="metrique" data-galerie="https://claude.ai/artifact/CQou6hnrZ72suKwQXZ53zz">
     <div class="p-texte">
       <p class="p-tags"><span class="etat ok">Actif</span><span class="ou">VM oao2022 · GitHub</span></p>
-      <h3>Étude métrique V2<span class="mesure">Suivi de la base et comparaison des capteurs CHLA et BBP700</span></h3>
-      <p class="p-desc">Deux volets. Le suivi quotidien de la base BGC-Argo : fichiers B modifiés par DAC, évolution des paramètres jour après jour, CHLA intégrée 0-150 m. La comparaison des capteurs : CHLA des ECO_2, ECO_3 et MCOMS face au satellite OC5, avec triple collocation, et BBP700 des FLBB, triplets et MCOMS face à la climatologie SOCA, en surface (0-10 m) et en profondeur (900-950 m).</p>
+      <h3>Étude métrique V2<span class="mesure">Le fichier métrique quotidien et les trois études qui le lisent</span></h3>
+      <p class="p-desc">Chaque nuit, l'étude produit un fichier de métriques sur tous les profils BGC-Argo (<code>/data3/ETUDE_METRIQUE_V2</code>). Depuis le 26 octobre, trois études le lisent, chacune avec sa page de graphiques : le suivi quotidien de la base (fichiers B modifiés par DAC, évolution des paramètres, CHLA intégrée 0-150 m) ; la CHLA des ECO_2, ECO_3 et MCOMS face au satellite OC5, avec triple collocation ; le BBP700 des FLBB, triplets et MCOMS face à la climatologie SOCA, en surface et à 900-950 m.</p>
       <dl class="chiffres">
-        <div><dt>Graphiques</dt><dd>26</dd></div>
-        <div><dt>Pages</dt><dd>404</dd></div>
-        <div><dt>Capteurs comparés</dt><dd>3 <small>par paramètre</small></dd></div>
-        <div><dt>Données</dt><dd>13 oct. <small>2026</small></dd></div>
+        <div><dt>Profils, fichier du 27 oct.</dt><dd>191&#8239;768</dd></div>
+        <div><dt>Flotteurs</dt><dd>1&#8239;522</dd></div>
+        <div><dt>Profils avec une CHLA OC5</dt><dd>159&#8239;589</dd></div>
+        <div><dt>Graphiques</dt><dd>26 <small>509 pages</small></dd></div>
       </dl>
+      <div class="graphe" id="g-metrique">
+        <h4>Profils dans le fichier métrique quotidien</h4>
+        <p class="sous">136 fichiers, du 28 mai au 27 octobre 2026 ; les segments droits couvrent les jours sans fichier.</p>
+        <div class="dessin"></div>
+      </div>
+      <p class="p-note">Le 27 octobre, le nombre de profils avec une CHLA OC5 est passé de 143&#8239;500 à 159&#8239;589.</p>
       <div class="liens">
-        <a class="bouton principal" href="https://claude.ai/artifact/CQou6hnrZ72suKwQXZ53zz" target="_blank" rel="noopener">Ouvrir les 26 graphiques</a>
+        <a class="bouton principal" href="https://claude.ai/artifact/5mcDQY8bPgqWs46afYyF8H" target="_blank" rel="noopener">Synthèse du fichier</a>
+        <a class="bouton" href="https://claude.ai/artifact/Fh22XT616xihE1MCWTW6Rv" target="_blank" rel="noopener">Suivi de la base · 62 p.</a>
+        <a class="bouton" href="https://claude.ai/artifact/PJrDCLZt8fciG6NTXHJxTx" target="_blank" rel="noopener">CHLA / OC5 · 154 p.</a>
+        <a class="bouton" href="https://claude.ai/artifact/QRzdbm9R412nJHgWJRAEhP" target="_blank" rel="noopener">BBP700 / SOCA · 293 p.</a>
         <a class="bouton" href="https://github.com/antoine250/ETUDE_METRIQUE_V2" target="_blank" rel="noopener">Dépôt GitHub</a>
       </div>
     </div>
     <div class="p-figures">
       <figure>
-        <button class="vignette" type="button" data-note="Facteur d'erreur de chaque capteur (ECO_2, ECO_3, MCOMS), année par année et en cumulé. Plus proche de 1 : meilleure précision ; pointillé : valeur idéale. CSV du 13 octobre 2026."><img src="img/metrique-1.jpg" width="1400" height="728" alt="Triple collocation des trois capteurs de chlorophylle" loading="lazy"></button>
+        <button class="vignette" type="button" data-note="Facteur d'erreur de chaque capteur (ECO_2, ECO_3, MCOMS), année par année et en cumulé. Plus proche de 1 : meilleure précision ; pointillé : valeur idéale. CSV du 27 octobre 2026."><img src="img/metrique-1.jpg" width="1400" height="728" alt="Triple collocation des trois capteurs de chlorophylle" loading="lazy"></button>
         <figcaption><strong>Triple collocation ECO_2 / ECO_3 / MCOMS</strong></figcaption>
       </figure>
       <div class="petites">
         <figure>
-          <button class="vignette" type="button" data-note="Nombre de fichiers B modifiés par jour et par DAC, sur les 6 mois jusqu'au 21 octobre 2026."><img src="img/metrique-2.jpg" width="1401" height="778" alt="Nombre de fichiers B modifiés par jour et par DAC" loading="lazy"></button>
+          <button class="vignette" type="button" data-note="Nombre de fichiers B modifiés par jour et par DAC, sur les 6 mois jusqu'au 27 octobre 2026."><img src="img/metrique-2.jpg" width="1400" height="778" alt="Nombre de fichiers B modifiés par jour et par DAC" loading="lazy"></button>
           <figcaption>Fichiers B modifiés par DAC</figcaption>
         </figure>
         <figure>
-          <button class="vignette" type="button" data-note="Localisation des matchups BBP700 médiane 900-950 m, dans les zones et périodes communes aux FLBB, triplets et MCOMS."><img src="img/metrique-3.jpg" width="1400" height="850" alt="Carte des matchups BBP700 entre 900 et 950 m" loading="lazy"></button>
+          <button class="vignette" type="button" data-note="Localisation des matchups BBP700 médiane 900-950 m, dans les zones et périodes communes aux FLBB, triplets et MCOMS. CSV du 27 octobre 2026."><img src="img/metrique-3.jpg" width="1400" height="850" alt="Carte des matchups BBP700 entre 900 et 950 m" loading="lazy"></button>
           <figcaption>Matchups BBP700 à 900-950 m</figcaption>
         </figure>
       </div>
@@ -423,7 +438,7 @@ dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
 
   <article class="projet" id="soca" data-galerie="https://claude.ai/artifact/SubBQHCvpD9kHn8tr6vQVr">
     <div class="p-texte">
-      <p class="p-tags"><span class="etat run">En calcul</span><span class="ou">VM oao2022</span></p>
+      <p class="p-tags"><span class="etat ok">Actif</span><span class="ou">VM oao2022</span></p>
       <h3>SOCA CLIM Light Argo<span class="mesure">Profils de lumière PAR, Ed380, Ed412 et Ed490</span></h3>
       <p class="p-desc">Chaîne quotidienne sur la VM (<code>run_pipeline.sh</code>, lancée par cron chaque jour à 12 h). Pour chaque profil BGC-Argo avec chlorophylle, elle produit un profil de lumière climatologique (CLIM) et un profil SOCA, à comparer avec ce que mesure le flotteur. Les PDF par flotteur sont servis par le site web de la VM, dans <code>/var/www/html/bioargo/</code>.</p>
       <dl class="chiffres">
@@ -432,7 +447,7 @@ dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
         <div><dt>Avec un profil SOCA rempli</dt><dd>108&#8239;142</dd></div>
         <div><dt>Flotteurs</dt><dd>1&#8239;526</dd></div>
       </dl>
-      <p class="p-note">Pas de SOCA après février 2026 : il n'y a plus de matchups ACRI. La chaîne a été relancée le 26 octobre à 15 h 19 ; la session doit donner le nouveau nombre de profils SOCA. Dernier run complet : 4 h 01.</p>
+      <p class="p-note">Pas de SOCA après février 2026 : il n'y a plus de matchups ACRI. Dernier run complet : 4 h 01, le 23 octobre.</p>
       <div class="liens">
         <a class="bouton principal" href="https://claude.ai/artifact/SubBQHCvpD9kHn8tr6vQVr" target="_blank" rel="noopener">Ouvrir les 106 graphiques</a>
         <a class="bouton" href="https://claude.ai/artifact/QTPrF1Qn6P3u3YFFb4jbF4" target="_blank" rel="noopener">Tableau de bord</a>
@@ -451,6 +466,43 @@ dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
         <figure>
           <button class="vignette" type="button" data-note="Premier cycle du flotteur 1902493. À gauche : mesuré par le flotteur (vert), climatologie (rouge), SOCA (bleu) ; à droite : climatologie et SOCA à midi local."><img src="img/soca-3.jpg" width="864" height="1152" alt="Profils de lumière du flotteur 1902493, cycle 1" loading="lazy"></button>
           <figcaption>WMO 1902493, cycle 1</figcaption>
+        </figure>
+      </div>
+    </div>
+  </article>
+
+  <article class="projet" id="ratiometrie" data-galerie="https://claude.ai/artifact/HyYfzFXPcbYqjjewMZZPCx">
+    <div class="p-texte">
+      <p class="p-tags"><span class="etat nouveau">Nouveau</span><span class="ou">Serveur · /data1/GDAC</span></p>
+      <h3>STAT_RATIOMETRIE<span class="mesure">Les radiomètres des flotteurs face à un modèle par ciel clair</span></h3>
+      <p class="p-desc">Compare l'éclairement descendant juste sous la surface, Ed(0-), mesuré par les radiomètres des flotteurs BGC-Argo, à un modèle par ciel clair (SPCTRL2) au même instant et au même endroit. Les nuages ne peuvent que baisser le rapport mesuré / modèle : par ciel clair, il vaut environ 1, et l'enveloppe haute (P90) représente ces profils.</p>
+      <dl class="chiffres">
+        <div><dt>Flotteurs avec radiométrie</dt><dd>582</dd></div>
+        <div><dt>Profils de jour comparés</dt><dd>54&#8239;067</dd></div>
+        <div><dt>P90 à 490 nm</dt><dd>1,11</dd></div>
+        <div><dt>Flotteurs à problème</dt><dd>30</dd></div>
+      </dl>
+      <div class="graphe" id="g-ratiometrie">
+        <h4>Rapport mesuré / modèle par canal</h4>
+        <p class="sous">Valeurs brutes. Le trait vertical marque 1 : le modèle. ED665 et ED670 sont laissés de côté : trop peu de profils.</p>
+        <div class="dessin"></div>
+      </div>
+      <p class="p-note">Les canaux Ed atteignent le modèle par ciel clair ; le PAR reste environ 15&nbsp;% en dessous. Pour 17 flotteurs MEDS, le PAR est 100 à 1&#8239;800 fois trop faible, à cause du calcul du DAC. 26 flotteurs montrent une baisse durable de l'enveloppe haute, dont 14 sur plusieurs canaux (biofouling probable). Extraction du 27 octobre 2026.</p>
+      <div class="liens"><a class="bouton principal" href="https://claude.ai/artifact/HyYfzFXPcbYqjjewMZZPCx" target="_blank" rel="noopener">Ouvrir la page des graphiques</a></div>
+    </div>
+    <div class="p-figures">
+      <figure>
+        <button class="vignette" type="button" data-note="Un histogramme par canal, échelle logarithmique. Le pic juste à 1 vient des profils par ciel clair, la traîne vers la gauche des profils nuageux. Bleu : brut, orange : ajusté. Le pic à 0,77 du PAR montre qu'il reste sous le modèle."><img src="img/ratio-1.jpg" width="1600" height="814" alt="Histogrammes du rapport mesuré sur modèle pour chaque canal" loading="lazy"></button>
+        <figcaption><strong>Distribution du rapport par canal</strong> · 27 octobre 2026</figcaption>
+      </figure>
+      <div class="petites">
+        <figure>
+          <button class="vignette" type="button" data-note="Couleur : nombre de profils. Trait plein : P90, tirets : médiane, par tranche de 5°. Le P90 reste plat de 0 à 80° : le modèle suit bien la hauteur du soleil. La médiane baisse quand le soleil est bas : plus de nuages aux hautes latitudes."><img src="img/ratio-2.jpg" width="1600" height="814" alt="Rapport mesuré sur modèle selon l'angle zénithal du soleil" loading="lazy"></button>
+          <figcaption>Selon l'angle zénithal du soleil</figcaption>
+        </figure>
+        <figure>
+          <button class="vignette" type="button" data-note="P90 du rapport brut de chaque flotteur, à sa position moyenne. Gris : modèle atteint. À 490 nm, un peu au-dessus sous les tropiques (rouge), en dessous aux hautes latitudes (bleu), où le ciel est rarement clair."><img src="img/ratio-3.jpg" width="1600" height="523" alt="Carte de l'enveloppe haute du rapport par flotteur, 490 nm et PAR" loading="lazy"></button>
+          <figcaption>Enveloppe haute par flotteur</figcaption>
         </figure>
       </div>
     </div>
@@ -581,7 +633,7 @@ dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
 </section>
 
 <footer class="pied">
-  <p>Page faite par Claude le 26 octobre 2026 à partir des pages de graphiques de chaque session et des dépôts GitHub. Les figures sont des copies réduites ; les originaux et toutes les autres pages sont dans les galeries.</p>
+  <p>Page faite par Claude le 26 octobre 2026 et mise à jour le 27 octobre 2026, à partir des pages de graphiques de chaque session et des dépôts GitHub. Les figures sont des copies réduites ; les originaux et toutes les autres pages sont dans les galeries.</p>
   <p>Les liens claude.ai s'ouvrent avec ton compte Claude. Source de la page : dépôt <code>antoine250/read_DOI</code>, dossier <code>projets/</code>.</p>
 </footer>
 
@@ -768,6 +820,100 @@ dialog#visio::backdrop { background: rgba(8, 18, 18, 0.72); }
   });
   tableau(gE, ["Bassin", "Rapport, ECO_FLBB", "Profils", "Rapport, ECO_FLBB2/CD/FL", "Profils"],
     BASSINS.map(function (b, i) { return [b, fr(FAM[0].r[i], 3), fr(FAM[0].n[i], 0), fr(FAM[1].r[i], 3), fr(FAM[1].n[i], 0)]; }));
+
+  // Courbe dans le temps : une série, un réticule vertical suit le pointeur (ou les flèches au clavier)
+  function courbe(conteneur, cfg) {
+    function dessiner() {
+      var W = Math.max(280, conteneur.clientWidth), H = 190, g = 44, d = 14, h = 14, b = 24;
+      var P = cfg.points, t0 = P[0].t, t1 = P[P.length - 1].t;
+      var x = function (t) { return g + (W - g - d) * (t - t0) / (t1 - t0); };
+      var y = function (v) { return h + (H - h - b) * (1 - (v - cfg.min) / (cfg.max - cfg.min)); };
+      var svg = el("svg", { viewBox: "0 0 " + W + " " + H, width: "100%", role: "img", "aria-label": cfg.titre });
+      cfg.yTicks.forEach(function (v) {
+        el("line", { x1: g, x2: W - d, y1: y(v), y2: y(v), "class": "grille" }, svg);
+        var t = el("text", { x: g - 6, y: y(v) + 4, "text-anchor": "end", "class": "axe" }, svg); t.textContent = cfg.formatY(v);
+      });
+      cfg.xTicks.forEach(function (k) {
+        var t = el("text", { x: x(k.t), y: H - 6, "text-anchor": "middle", "class": "axe" }, svg); t.textContent = k.label;
+      });
+      var trace = P.map(function (p, i) { return (i ? "L" : "M") + x(p.t).toFixed(1) + "," + y(p.v).toFixed(1); }).join("");
+      el("path", { d: trace + "L" + x(t1) + "," + (H - b) + "L" + x(t0) + "," + (H - b) + "Z", style: "fill:" + cfg.couleur + ";fill-opacity:0.1" }, svg);
+      el("path", { d: trace, style: "fill:none;stroke:" + cfg.couleur + ";stroke-width:2;stroke-linejoin:round;stroke-linecap:round" }, svg);
+      var der = P[P.length - 1];
+      el("circle", { cx: x(der.t), cy: y(der.v), r: 4.5, style: "fill:" + cfg.couleur + ";stroke:var(--surface);stroke-width:2" }, svg);
+      var fin = el("text", { x: x(der.t) - 8, y: y(der.v) - 8, "text-anchor": "end", "class": "chiffre" }, svg);
+      fin.textContent = fr(der.v, 0);
+      var reticule = el("line", { x1: 0, x2: 0, y1: h, y2: H - b, "class": "ref", visibility: "hidden" }, svg);
+      var point = el("circle", { cx: 0, cy: 0, r: 4, style: "fill:" + cfg.couleur + ";stroke:var(--surface);stroke-width:2", visibility: "hidden" }, svg);
+      var zone = el("rect", { x: g, y: 0, width: W - g - d, height: H - b, "class": "zone", tabindex: "0", "aria-label": cfg.titre + ", flèches gauche et droite pour parcourir" }, svg);
+      var courant = P.length - 1;
+      function montrer(i, cx, cy) {
+        var p = P[i]; courant = i;
+        reticule.setAttribute("x1", x(p.t)); reticule.setAttribute("x2", x(p.t)); reticule.setAttribute("visibility", "visible");
+        point.setAttribute("cx", x(p.t)); point.setAttribute("cy", y(p.v)); point.setAttribute("visibility", "visible");
+        var info = cfg.bulle(p); montrerBulle(cx, cy, info[0], info[1]);
+      }
+      function cacher() { reticule.setAttribute("visibility", "hidden"); point.setAttribute("visibility", "hidden"); cacherBulle(); }
+      function ecran(i) { var r = svg.getBoundingClientRect(); return [r.left + x(P[i].t) * r.width / W, r.top + y(P[i].v) * r.height / H]; }
+      zone.addEventListener("pointermove", function (e) {
+        var r = svg.getBoundingClientRect(), tx = t0 + (t1 - t0) * ((e.clientX - r.left) * W / r.width - g) / (W - g - d);
+        var k = 0; P.forEach(function (p, i) { if (Math.abs(p.t - tx) < Math.abs(P[k].t - tx)) k = i; });
+        montrer(k, e.clientX, e.clientY);
+      });
+      zone.addEventListener("pointerleave", cacher);
+      zone.addEventListener("blur", cacher);
+      zone.addEventListener("focus", function () { var c = ecran(courant); montrer(courant, c[0], c[1]); });
+      zone.addEventListener("keydown", function (e) {
+        if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+        e.preventDefault();
+        var i = Math.max(0, Math.min(P.length - 1, courant + (e.key === "ArrowRight" ? 1 : -1)));
+        var c = ecran(i); montrer(i, c[0], c[1]);
+      });
+      conteneur.replaceChildren(svg);
+    }
+    dessiner();
+    var largeur = conteneur.clientWidth;
+    if (window.ResizeObserver) new ResizeObserver(function () {
+      if (Math.abs(conteneur.clientWidth - largeur) > 4) { largeur = conteneur.clientWidth; dessiner(); }
+    }).observe(conteneur);
+  }
+
+  // Étude métrique V2 : profils dans chaque fichier métrique quotidien
+  var HISTO = [["2026-05-28",179961,1448],["2026-05-29",180039,1449],["2026-05-30",180140,1451],["2026-05-31",180218,1452],["2026-06-01",180291,1452],["2026-06-02",180356,1452],["2026-06-03",180456,1453],["2026-06-04",180553,1455],["2026-06-08",180846,1456],["2026-06-10",180993,1456],["2026-06-11",181050,1456],["2026-06-12",181677,1456],["2026-06-13",181508,1457],["2026-06-14",181590,1457],["2026-06-15",181627,1457],["2026-06-16",181722,1457],["2026-06-17",181804,1457],["2026-06-18",181913,1457],["2026-06-19",181061,1456],["2026-06-20",180641,1457],["2026-06-21",181398,1459],["2026-06-22",181939,1459],["2026-06-23",182044,1460],["2026-06-24",181949,1461],["2026-06-25",181499,1460],["2026-06-26",182256,1460],["2026-06-27",181983,1460],["2026-06-28",180519,1456],["2026-06-29",181439,1459],["2026-06-30",181711,1458],["2026-07-01",182619,1461],["2026-07-02",182816,1464],["2026-07-03",182865,1464],["2026-07-04",183010,1467],["2026-07-05",183084,1467],["2026-07-06",183159,1468],["2026-07-07",182982,1467],["2026-07-08",182542,1468],["2026-07-09",183351,1471],["2026-07-10",183267,1470],["2026-07-11",183524,1472],["2026-07-12",183587,1473],["2026-07-13",183606,1473],["2026-07-14",183581,1473],["2026-07-15",182907,1471],["2026-07-16",183025,1474],["2026-07-17",183493,1475],["2026-07-18",184544,1480],["2026-07-19",184613,1480],["2026-07-20",184668,1480],["2026-07-21",184729,1480],["2026-07-22",184812,1480],["2026-07-23",184869,1480],["2026-07-24",184776,1480],["2026-07-25",185023,1480],["2026-07-26",185096,1480],["2026-07-27",185162,1480],["2026-07-28",185246,1480],["2026-07-29",185311,1480],["2026-07-30",185377,1481],["2026-07-31",185512,1484],["2026-08-01",185593,1485],["2026-08-02",185665,1485],["2026-08-03",185723,1485],["2026-08-04",185744,1484],["2026-08-05",185893,1485],["2026-08-06",185902,1479],["2026-08-08",185993,1485],["2026-08-09",186018,1485],["2026-08-10",186094,1485],["2026-08-11",186078,1485],["2026-08-13",186256,1485],["2026-08-14",186359,1486],["2026-08-15",186276,1486],["2026-08-16",186489,1486],["2026-08-17",186596,1486],["2026-08-18",186548,1487],["2026-08-19",186722,1487],["2026-08-20",186803,1487],["2026-08-21",186862,1488],["2026-08-22",186964,1487],["2026-08-23",187016,1488],["2026-08-24",187089,1488],["2026-08-25",187151,1488],["2026-08-26",186619,1488],["2026-08-27",187316,1491],["2026-08-28",187450,1492],["2026-08-29",187490,1488],["2026-08-30",187575,1492],["2026-08-31",187711,1492],["2026-09-01",187712,1492],["2026-09-02",187687,1492],["2026-09-04",187920,1492],["2026-09-05",187999,1492],["2026-09-06",188075,1492],["2026-09-07",188118,1492],["2026-09-08",188139,1493],["2026-09-09",188281,1494],["2026-09-11",188414,1499],["2026-09-12",188470,1499],["2026-09-13",188551,1500],["2026-09-14",188621,1500],["2026-09-15",188558,1500],["2026-09-16",188761,1501],["2026-09-17",188861,1503],["2026-09-18",189499,1506],["2026-09-19",189494,1506],["2026-09-20",189630,1508],["2026-09-21",189705,1510],["2026-09-22",189778,1510],["2026-09-23",189859,1510],["2026-09-25",190024,1512],["2026-09-26",190094,1513],["2026-09-27",190176,1513],["2026-09-28",190250,1514],["2026-09-29",190198,1514],["2026-09-30",190268,1514],["2026-10-01",190368,1514],["2026-10-02",190509,1514],["2026-10-03",190577,1514],["2026-10-04",190657,1514],["2026-10-05",190652,1515],["2026-10-06",190792,1515],["2026-10-07",190886,1517],["2026-10-08",190982,1518],["2026-10-09",189033,1497],["2026-10-10",190529,1514],["2026-10-11",190599,1513],["2026-10-12",190670,1514],["2026-10-13",190737,1514],["2026-10-22",191478,1520],["2026-10-23",191314,1519],["2026-10-24",191066,1519],["2026-10-25",191621,1521],["2026-10-26",191687,1521],["2026-10-27",191768,1522]];
+  function jour(iso) { return Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10)); }
+  function dateFr(t) { return new Date(t).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }); }
+  var gM = document.getElementById("g-metrique");
+  courbe(gM.querySelector(".dessin"), {
+    titre: "Profils dans le fichier métrique quotidien",
+    points: HISTO.map(function (r) { return { t: jour(r[0]), v: r[1], flotteurs: r[2] }; }),
+    min: 178000, max: 194000, yTicks: [180000, 185000, 190000],
+    formatY: function (v) { return fr(v / 1000, 0) + " k"; },
+    xTicks: [["2026-06-01", "juin"], ["2026-07-01", "juil."], ["2026-08-01", "août"], ["2026-09-01", "sept."], ["2026-10-01", "oct."]]
+      .map(function (m) { return { t: jour(m[0]), label: m[1] }; }),
+    couleur: jeton("--accent"),
+    bulle: function (p) { return [fr(p.v, 0) + " profils", "Fichier du " + dateFr(p.t) + " · " + fr(p.flotteurs, 0) + " flotteurs"]; }
+  });
+  tableau(gM, ["Fichier", "Profils", "Flotteurs"], HISTO.map(function (r) { return [r[0], fr(r[1], 0), fr(r[2], 0)]; }));
+
+  // STAT_RATIOMETRIE : mode et P90 du rapport mesuré / modèle (valeurs brutes, extraction du 27 octobre 2026)
+  var CANAUX = [
+    ["Ed 380 nm", 50120, 494, 0.92, 1.06], ["Ed 412 nm", 48152, 384, 1.04, 1.17], ["Ed 443 nm", 4842, 150, 1.01, 1.13],
+    ["Ed 490 nm", 49520, 518, 0.99, 1.11], ["Ed 555 nm", 2967, 136, 0.94, 1.08], ["PAR", 50140, 382, 0.77, 0.88]
+  ];
+  var STATS = [{ nom: "Mode", couleur: jeton("--s1") }, { nom: "P90 (enveloppe haute)", couleur: jeton("--s2") }];
+  var gRa = document.getElementById("g-ratiometrie");
+  legende(gRa, STATS);
+  barres(gRa.querySelector(".dessin"), {
+    titre: "Rapport mesuré / modèle par canal",
+    lignes: CANAUX.map(function (c) { return { nom: c[0], sous: fr(c[1], 0) + " profils" }; }),
+    series: STATS, ref: 1,
+    valeurs: CANAUX.map(function (c) { return [c[3], c[4]]; }),
+    max: 1.25, pas: 0.25,
+    format: function (v, axe) { return fr(v, 2); },
+    bulle: function (i, k) { return [fr(CANAUX[i][3 + k], 2), CANAUX[i][0] + " · " + STATS[k].nom + " · " + fr(CANAUX[i][1], 0) + " profils, " + CANAUX[i][2] + " flotteurs"]; }
+  });
+  tableau(gRa, ["Canal", "Profils", "Flotteurs", "Mode", "P90"],
+    CANAUX.map(function (c) { return [c[0], fr(c[1], 0), String(c[2]), fr(c[3], 2), fr(c[4], 2)]; }));
 
   // Visionneuse : agrandit une figure, avec la figure précédente / suivante du même projet
   var visio = document.getElementById("visio"), vImg = document.getElementById("v-img");
